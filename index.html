@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Answer Sheet — Test Portal</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Source+Serif+4:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap');
@@ -208,8 +209,9 @@ button:focus-visible{outline:3px solid var(--red); outline-offset:2px;}
 .mark-svg path{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:draw .5s ease forwards;}
 @keyframes draw{to{stroke-dashoffset:0;}}
 
-table.report{width:100%;border-collapse:collapse;font-family:'IBM Plex Mono', monospace;font-size:0.8rem;}
-table.report th, table.report td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table.report{width:100%;min-width:520px;border-collapse:collapse;font-family:'IBM Plex Mono', monospace;font-size:0.8rem;}
+table.report th, table.report td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap;}
 table.report th{text-transform:uppercase;font-size:0.66rem;letter-spacing:1px;color:var(--pencil);}
 table.report tr.report-row{cursor:pointer;}
 table.report tr.report-row:hover{background:var(--paper-2);}
@@ -266,8 +268,26 @@ select{
 }
 
 @media (max-width:600px){
-  .sheet{padding:24px 18px;}
+  body{padding:20px 10px 48px;}
+  .sheet{padding:20px 16px;border-radius:0 8px 8px 8px;}
   .masthead h1{font-size:1.5rem;}
+  .masthead{margin-bottom:20px;}
+  h2.section-title{font-size:1rem;margin-bottom:16px;}
+  .tab{padding:9px 14px 11px;font-size:0.78rem;}
+  button{padding:12px 18px;font-size:0.82rem;}
+  button.danger{padding:9px 12px;font-size:0.72rem;}
+  .score-hero .big{font-size:2.4rem;}
+  .paper-card, .q-card{padding:14px 16px;}
+  .paper-card{flex-direction:column;align-items:stretch;}
+  .paper-card .p-actions{justify-content:flex-end;}
+  /* Prevent iOS Safari from auto-zooming on focus when a field's font-size is under 16px */
+  textarea, select{font-size:16px;}
+}
+
+@media (max-width:380px){
+  .masthead h1{font-size:1.3rem;}
+  .score-hero .big{font-size:2rem;}
+  .q-number, .p-meta, .q-meta{font-size:0.62rem;}
 }
 </style>
 </head>
@@ -1022,10 +1042,12 @@ function viewAdminReport(){
     <select id="reportFilter" onchange="reportFilterPaperId=this.value;render();">${options}</select>
     <div style="margin-top:18px;">
       ${filtered.length === 0 ? `<div class="empty-state">No attempts for this paper yet.</div>` : `
+      <div class="table-scroll">
       <table class="report">
         <thead><tr><th>Name</th><th>Paper</th><th>Score</th><th>Submitted</th><th></th></tr></thead>
         <tbody>${rows}</tbody>
-      </table>`}
+      </table>
+      </div>`}
     </div>
   `;
 }
