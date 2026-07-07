@@ -478,9 +478,15 @@ async function confirmName(){
 
 function viewStudentPapers(){
   const eligible = papersIndex.filter(p => p.questionCount > 0);
+  const header = `
+    <div class="row-between" style="margin-bottom:20px;">
+      <h2 class="section-title" style="margin-bottom:0;border-bottom:none;padding-bottom:0;">Choose a Test — ${esc(studentName)}</h2>
+      <button class="secondary" onclick="studentLogout()">Log Out</button>
+    </div>
+  `;
   if(eligible.length === 0){
     return `
-      <h2 class="section-title">Choose a Test — ${esc(studentName)}</h2>
+      ${header}
       <div class="empty-state">No test papers are available yet. Please check back later.</div>
     `;
   }
@@ -494,12 +500,21 @@ function viewStudentPapers(){
     </div>
   `).join('');
   return `
-    <h2 class="section-title">Choose a Test — ${esc(studentName)}</h2>
+    ${header}
     ${cards}
   `;
 }
 // note: function name kept plain below (typo-safe alias)
 function choosePaper(id){ startPaper(id); }
+function studentLogout(){
+  if(view === 'quiz' && !confirm('Log out now? Any unsaved answers for this test will be lost.')) return;
+  studentName = "";
+  currentPaperId = null;
+  currentAnswers = {};
+  lastResult = null;
+  view = 'student-name';
+  render();
+}
 async function startPaper(id){
   currentAnswers = {};
   const sheet = document.getElementById('sheet');
@@ -601,7 +616,10 @@ function viewResult(){
       <div class="sub">${esc(r.paperTitle)} — ${esc(studentName)}</div>
     </div>
     ${rows}
-    <button class="secondary" onclick="view='student-papers';render();">Choose Another Test</button>
+    <div class="row-between">
+      <button class="secondary" onclick="view='student-papers';render();">Choose Another Test</button>
+      <button class="secondary" onclick="studentLogout()">Log Out</button>
+    </div>
   `;
 }
 
