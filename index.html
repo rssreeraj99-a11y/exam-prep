@@ -397,6 +397,29 @@ function uid(){ return Date.now().toString(36) + Math.random().toString(36).slic
 function esc(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function getPaper(id){ return paperCache[id]; }
 
+// ---------- session persistence (survive a page refresh, cleared when the tab closes) ----------
+const SESSION_KEY = 'answerSheet:session';
+function saveSession(){
+  try{
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify({
+      view, adminAuthed, studentName, currentPaperId, reportFilterPaperId, currentAttemptId
+    }));
+  }catch(e){}
+}
+function restoreSession(){
+  try{
+    const raw = sessionStorage.getItem(SESSION_KEY);
+    if(!raw) return;
+    const s = JSON.parse(raw);
+    if(s.view) view = s.view;
+    adminAuthed = !!s.adminAuthed;
+    studentName = s.studentName || "";
+    currentPaperId = s.currentPaperId || null;
+    reportFilterPaperId = s.reportFilterPaperId || "all";
+    currentAttemptId = s.currentAttemptId || null;
+  }catch(e){}
+}
+
 // ---------- tabs ----------
 function renderTabs(){
   const tabs = document.getElementById('tabs');
@@ -430,6 +453,7 @@ function render(){
   else if(view === 'admin-paper-detail') sheet.innerHTML = viewAdminPaperDetail();
   else if(view === 'admin-report') sheet.innerHTML = viewAdminReport();
   else if(view === 'admin-attempt-detail') sheet.innerHTML = viewAttemptDetail();
+  saveSession();
 }
 
 // ================= STUDENT =================
@@ -951,6 +975,7 @@ async function init(){
     renderTabs();
     return;
   }
+  restoreSession();
   try{
     await Promise.all([
       loadPapersIndex(),
@@ -960,6 +985,25 @@ async function init(){
     sheet.innerHTML = `<div class="msg error">Could not load data from GitHub: ${esc(e.message)}</div>`;
     renderTabs();
     return;
+  }
+  // Fall back to a sane view if the restored one needs data that isn't available after a fresh reload.
+  if(view.startsWith('admin') && !adminAuthed){
+    view = 'admin-login';
+  }
+  if((view === 'quiz' || view === 'result') && !studentName){
+    view = 'student-name';
+  }
+  if(view === 'result'){
+    view = 'student-papers'; // lastResult isn't persisted across a reload
+  }
+  if(view === 'admin-attempt-detail' && !attempts.find(a => a.id === currentAttemptId)){
+    view = 'admin-report';
+  }
+  if((view === 'quiz' || view === 'admin-paper-detail') && currentPaperId){
+    try{ await loadPaper(currentPaperId); }catch(e){ /* fall through to the not-found check below */ }
+    if(!paperCache[currentPaperId]){
+      view = view === 'quiz' ? 'student-papers' : 'admin-papers';
+    }
   }
   render();
 }
