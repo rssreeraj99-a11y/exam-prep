@@ -852,7 +852,7 @@ async function goAdminReport(){
 }
 
 function viewAdminReport(){
-  const options = `<option value="all">All Papers</option>` + papers.map(p => `<option value="${p.id}">${esc(p.title)}</option>`).join('');
+  const options = `<option value="all">All Papers</option>` + papersIndex.map(p => `<option value="${p.id}">${esc(p.title)}</option>`).join('');
   const filtered = reportFilterPaperId === 'all' ? attempts : attempts.filter(a => a.paperId === reportFilterPaperId);
 
   if(attempts.length === 0){
