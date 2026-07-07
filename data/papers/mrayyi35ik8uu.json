@@ -391,6 +391,266 @@
       "correct": [
         2
       ]
+    },
+    {
+      "id": "mraz1zzpono1l",
+      "text": "In old age, after tooth loss, the angle of the mandible tends to?",
+      "options": [
+        "Become more acute",
+        "Remain unchanged",
+        "Become more obtuse",
+        "Fuse completely with the maxilla"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mraz1zzpj6cu1",
+      "text": "Which view visualizes the entire maxilla, mandible, TMJ, and all teeth in one image?",
+      "options": [
+        "Lateral skull view",
+        "Orthopantomogram (OPG)",
+        "Waters view",
+        "PA view"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mraz1zzpi4o4s",
+      "text": "The suture between the two parietal bones is called the?",
+      "options": [
+        "Coronal suture",
+        "Sagittal suture",
+        "Lambdoid suture",
+        "Squamous suture"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mraz1zzpatng3",
+      "text": "Which cranial fossa supports the frontal lobes of the brain?",
+      "options": [
+        "Anterior cranial fossa",
+        "Middle cranial fossa",
+        "Posterior cranial fossa",
+        "None of the above"
+      ],
+      "correct": [
+        0
+      ]
+    },
+    {
+      "id": "mraz1zzpx592u",
+      "text": "The average cranial capacity of the male skull is approximately?",
+      "options": [
+        "1000–1100 cc",
+        "1300–1400 cc",
+        "1450–1500 cc",
+        "1800–1900 cc"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mraz1zzpam2kj",
+      "text": "The nasopalatine nerve passes through the?",
+      "options": [
+        "Greater palatine foramen",
+        "Lesser palatine foramen",
+        "Incisive foramen",
+        "Pterygoid canal"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mraz1zzpstafg",
+      "text": "The supraorbital notch/foramen is located on the?",
+      "options": [
+        "Zygomatic bone",
+        "Frontal bone",
+        "Maxilla",
+        "Sphenoid bone"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mraz1zzpqa70n",
+      "text": "The submentovertical (SMV) view is useful for visualizing?",
+      "options": [
+        "Frontal sinuses",
+        "Foramen ovale, spinosum, and zygomatic arches",
+        "Orbital floors",
+        "Mandibular canal"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mraz1zzpuy9fn",
+      "text": "The anterior fontanelle normally closes by?",
+      "options": [
+        "2–3 months",
+        "6 months",
+        "18 months",
+        "3 years"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mraz1zzpi333p",
+      "text": "The lacrimal fossa is formed jointly by the lacrimal bone and?",
+      "options": [
+        "Ethmoid bone",
+        "Frontal bone",
+        "Maxilla",
+        "Palatine bone"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mraz1zzp3yfsi",
+      "text": "The suture between the frontal and parietal bones is called the?",
+      "options": [
+        "Coronal suture",
+        "Sagittal suture",
+        "Lambdoid suture",
+        "Metopic suture"
+      ],
+      "correct": [
+        0
+      ]
+    },
+    {
+      "id": "mraz1zzpksgi7",
+      "text": "The middle meningeal artery passes through which foramen?",
+      "options": [
+        "Foramen ovale",
+        "Foramen spinosum",
+        "Foramen rotundum",
+        "Foramen lacerum"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mraz1zzpx2z8e",
+      "text": "Which cranial fossa is the largest and deepest?",
+      "options": [
+        "Anterior cranial fossa",
+        "Middle cranial fossa",
+        "Posterior cranial fossa",
+        "None, they are equal"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mraz1zzpf02at",
+      "text": "Which cranial nerves pass through the superior orbital fissure?",
+      "options": [
+        "II, III, IV",
+        "III, IV, VI and ophthalmic division of V",
+        "V2 and V3",
+        "VII and VIII"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mraz1zzpsbh29",
+      "text": "Which structures pass through the jugular foramen?",
+      "options": [
+        "Facial and vestibulocochlear nerves",
+        "Glossopharyngeal, vagus, and accessory nerves",
+        "Hypoglossal nerve and internal carotid artery",
+        "Optic nerve and ophthalmic artery"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mraz1zzpd1xry",
+      "text": "Which bone is described as the keystone bone of the skull?",
+      "options": [
+        "Ethmoid",
+        "Sphenoid",
+        "Temporal",
+        "Occipital"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mraz1zzpqmfkr",
+      "text": "The crista galli is a projection from which bone?",
+      "options": [
+        "Frontal bone",
+        "Sphenoid bone",
+        "Ethmoid bone",
+        "Occipital bone"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mraz1zzpmtpon",
+      "text": "The sella turcica, which houses the pituitary gland, is a feature of the?",
+      "options": [
+        "Ethmoid bone",
+        "Occipital bone",
+        "Sphenoid bone",
+        "Temporal bone"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mraz1zzpvj4ct",
+      "text": "The anterior fontanelle is located at the junction of which sutures?",
+      "options": [
+        "Sagittal and lambdoid",
+        "Coronal and sagittal",
+        "Coronal and squamous",
+        "Lambdoid and squamous"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mraz1zzpe7p27",
+      "text": "The internal carotid artery passes through which canal in the base of the skull?",
+      "options": [
+        "Hypoglossal canal",
+        "Carotid canal",
+        "Optic canal",
+        "Condylar canal"
+      ],
+      "correct": [
+        1
+      ]
     }
   ]
 }
