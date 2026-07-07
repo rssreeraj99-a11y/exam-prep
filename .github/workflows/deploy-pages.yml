@@ -29,7 +29,7 @@ jobs:
           GH_CONTENTS_TOKEN: ${{ secrets.GH_CONTENTS_TOKEN }}
         run: |
           mkdir -p site
-          sed "s/PASTE_TOKEN_HERE/${GH_CONTENTS_TOKEN}/" index.html > site/index.html
+          sed "s/const GITHUB_TOKEN = \"PASTE_TOKEN_HERE\";/const GITHUB_TOKEN = \"${GH_CONTENTS_TOKEN}\";/" index.html > site/index.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

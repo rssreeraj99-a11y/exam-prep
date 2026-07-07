@@ -889,7 +889,7 @@ function viewAdminReport(){
 async function init(){
   const sheet = document.getElementById('sheet');
   sheet.innerHTML = `<div class="empty-state">Loading…</div>`;
-  if(GITHUB_TOKEN === "PASTE_TOKEN_HERE"){
+  if(!GITHUB_TOKEN || GITHUB_TOKEN.length < 30){
     sheet.innerHTML = `<div class="msg error">Setup needed: paste a GitHub fine-grained PAT (Contents: read/write on this repo) into the GITHUB_TOKEN constant in index.html, then reload.</div>`;
     renderTabs();
     return;
