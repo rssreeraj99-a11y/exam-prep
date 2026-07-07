@@ -666,7 +666,39 @@ function viewAdminPapers(){
     <div style="margin-top:16px;">
       <button onclick="createPaper()">Create Paper</button>
     </div>
+
+    <h2 class="section-title" style="margin-top:32px;color:var(--red);">Danger Zone</h2>
+    <p class="hint" style="margin-bottom:10px;">Permanently deletes every test paper, question, submitted result, and registered student name. This cannot be undone.</p>
+    <div id="eraseMsg"></div>
+    <div style="margin-top:10px;">
+      <button class="danger" onclick="eraseAllData()">Erase All Data</button>
+    </div>
   `;
+}
+async function eraseAllData(){
+  const typed = prompt('This permanently deletes ALL papers, questions, results, and registered users.\nType ERASE (all caps) to confirm.');
+  if(typed !== 'ERASE') return;
+  const msgEl = document.getElementById('eraseMsg');
+  msgEl.innerHTML = `<div class="empty-state">Erasing…</div>`;
+  try{
+    for(const p of papersIndex){
+      const { sha } = await ghGetJson(`data/papers/${p.id}.json`, null);
+      if(sha) await ghDeleteFile(`data/papers/${p.id}.json`, sha, `Erase all: delete paper ${p.id}`);
+    }
+    const { sha: idxSha } = await ghGetJson('data/papers-index.json', []);
+    await ghPutJson('data/papers-index.json', [], idxSha, 'Erase all: reset papers index');
+    const { sha: resSha } = await ghGetJson('data/results.json', []);
+    await ghPutJson('data/results.json', [], resSha, 'Erase all: reset results');
+    const { sha: usersSha } = await ghGetJson('data/users.json', []);
+    await ghPutJson('data/users.json', [], usersSha, 'Erase all: reset users');
+    papersIndex = [];
+    paperCache = {};
+    attempts = [];
+  }catch(e){
+    msgEl.innerHTML = `<div class="msg error">Failed to erase all data: ${esc(e.message)}</div>`;
+    return;
+  }
+  render();
 }
 async function createPaper(){
   const title = document.getElementById('paperTitle').value.trim();
@@ -906,6 +938,7 @@ function viewAdminReport(){
       <td>${esc(a.paperTitle)}</td>
       <td>${a.score} / ${a.total}</td>
       <td>${new Date(a.timestamp).toLocaleString()}</td>
+      <td><button class="danger" onclick="event.stopPropagation(); deleteAttempt('${a.id}')">Delete</button></td>
     </tr>
   `).join('');
   const avg = filtered.length > 0
@@ -919,7 +952,7 @@ function viewAdminReport(){
     <div style="margin-top:18px;">
       ${filtered.length === 0 ? `<div class="empty-state">No attempts for this paper yet.</div>` : `
       <table class="report">
-        <thead><tr><th>Name</th><th>Paper</th><th>Score</th><th>Submitted</th></tr></thead>
+        <thead><tr><th>Name</th><th>Paper</th><th>Score</th><th>Submitted</th><th></th></tr></thead>
         <tbody>${rows}</tbody>
       </table>`}
     </div>
@@ -929,6 +962,23 @@ function viewAdminReport(){
 function openAttemptDetail(id){
   currentAttemptId = id;
   view = 'admin-attempt-detail';
+  render();
+}
+
+async function deleteAttempt(id){
+  if(!confirm('Delete this result? This cannot be undone.')) return;
+  try{
+    const { json: results, sha } = await ghGetJson('data/results.json', []);
+    const newResults = results.filter(a => a.id !== id);
+    await ghPutJson('data/results.json', newResults, sha, `Delete result ${id}`);
+    attempts = newResults;
+  }catch(e){
+    alert(`Failed to delete result: ${e.message}`);
+    return;
+  }
+  if(view === 'admin-attempt-detail' && currentAttemptId === id){
+    view = 'admin-report';
+  }
   render();
 }
 
@@ -957,7 +1007,10 @@ function viewAttemptDetail(){
     `;
   }).join('');
   return `
-    <button class="secondary" onclick="view='admin-report';render();" style="margin-bottom:18px;">← Back to Report</button>
+    <div class="row-between" style="margin-bottom:18px;">
+      <button class="secondary" onclick="view='admin-report';render();">← Back to Report</button>
+      <button class="danger" onclick="deleteAttempt('${attempt.id}')">Delete This Result</button>
+    </div>
     <div class="score-hero">
       <div class="big">${attempt.score} / ${attempt.total}</div>
       <div class="sub">${esc(attempt.paperTitle)} — ${esc(attempt.name)}</div>
