@@ -211,6 +211,25 @@ button:focus-visible{outline:3px solid var(--red); outline-offset:2px;}
 table.report{width:100%;border-collapse:collapse;font-family:'IBM Plex Mono', monospace;font-size:0.8rem;}
 table.report th, table.report td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);}
 table.report th{text-transform:uppercase;font-size:0.66rem;letter-spacing:1px;color:var(--pencil);}
+table.report tr.report-row{cursor:pointer;}
+table.report tr.report-row:hover{background:var(--paper-2);}
+
+.review-option{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:9px 12px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  margin-bottom:8px;
+  background:#fff;
+  font-size:0.92rem;
+}
+.review-option .review-marker{width:16px;flex-shrink:0;font-weight:700;text-align:center;}
+.review-option.opt-correct{background:#E7F3ED;border-color:var(--green);}
+.review-option.opt-correct .review-marker{color:var(--green);}
+.review-option.opt-wrong{background:#FBE9E7;border-color:var(--red);}
+.review-option.opt-wrong .review-marker{color:var(--red);}
 
 .empty-state{text-align:center;padding:40px 20px;color:var(--pencil);font-family:'IBM Plex Mono', monospace;font-size:0.85rem;}
 
@@ -266,6 +285,7 @@ let currentPaperId = null;    // paper the student picked / admin is managing
 let currentAnswers = {};      // {qId: Set(indices)}
 let lastResult = null;
 let reportFilterPaperId = "all";
+let currentAttemptId = null;  // attempt the admin is reviewing in detail
 
 // ---------- GitHub Contents API helpers ----------
 function ghHeaders(){
@@ -409,6 +429,7 @@ function render(){
   else if(view === 'admin-papers') sheet.innerHTML = viewAdminPapers();
   else if(view === 'admin-paper-detail') sheet.innerHTML = viewAdminPaperDetail();
   else if(view === 'admin-report') sheet.innerHTML = viewAdminReport();
+  else if(view === 'admin-attempt-detail') sheet.innerHTML = viewAttemptDetail();
 }
 
 // ================= STUDENT =================
@@ -514,7 +535,7 @@ async function submitTest(){
     const correct = [...q.correct].sort();
     const isCorrect = JSON.stringify(selected) === JSON.stringify(correct);
     if(isCorrect) score++;
-    return { qId: q.id, text: q.text, selected, correct, isCorrect };
+    return { qId: q.id, text: q.text, options: q.options, selected, correct, isCorrect };
   });
   lastResult = { paperTitle: paper.title, score, total: paper.questions.length, detail };
   const attempt = {
@@ -860,7 +881,7 @@ function viewAdminReport(){
   }
   const sorted = [...filtered].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
   const rows = sorted.map(a => `
-    <tr>
+    <tr class="report-row" onclick="openAttemptDetail('${a.id}')">
       <td>${esc(a.name)}</td>
       <td>${esc(a.paperTitle)}</td>
       <td>${a.score} / ${a.total}</td>
@@ -882,6 +903,46 @@ function viewAdminReport(){
         <tbody>${rows}</tbody>
       </table>`}
     </div>
+  `;
+}
+
+function openAttemptDetail(id){
+  currentAttemptId = id;
+  view = 'admin-attempt-detail';
+  render();
+}
+
+function viewAttemptDetail(){
+  const attempt = attempts.find(a => a.id === currentAttemptId);
+  if(!attempt){ view = 'admin-report'; render(); return ''; }
+  const rows = attempt.detail.map((d, idx) => {
+    const opts = (d.options || []).map((opt, i) => {
+      const isCorrectOpt = d.correct.includes(i);
+      const isSelectedOpt = d.selected.includes(i);
+      let cls = '';
+      if(isCorrectOpt) cls = 'opt-correct';
+      else if(isSelectedOpt) cls = 'opt-wrong';
+      const marker = isCorrectOpt ? '✓' : (isSelectedOpt ? '✗' : '');
+      return `<div class="review-option ${cls}"><span class="review-marker">${marker}</span>${esc(opt)}</div>`;
+    }).join('');
+    return `
+      <div class="q-card">
+        <div class="q-meta" style="margin-top:0;margin-bottom:10px;">
+          <span>Question ${idx+1}</span>
+          <span style="color:${d.isCorrect?'var(--green)':'var(--red)'};font-weight:600;">${d.isCorrect ? 'Correct' : 'Incorrect'}</span>
+        </div>
+        <div class="q-text">${esc(d.text)}</div>
+        ${opts}
+      </div>
+    `;
+  }).join('');
+  return `
+    <button class="secondary" onclick="view='admin-report';render();" style="margin-bottom:18px;">← Back to Report</button>
+    <div class="score-hero">
+      <div class="big">${attempt.score} / ${attempt.total}</div>
+      <div class="sub">${esc(attempt.paperTitle)} — ${esc(attempt.name)}</div>
+    </div>
+    ${rows}
   `;
 }
 
