@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Answer Sheet — Test Portal</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Source+Serif+4:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap');
+
+:root{
+  --paper:#FAF7F0;
+  --paper-2:#F1ECDF;
+  --ink:#1F2A44;
+  --pencil:#4A4A4A;
+  --red:#C0392B;
+  --green:#2F7D5A;
+  --line:#D9D3C3;
+  --shadow: rgba(31,42,68,0.10);
+}
+
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:
+    repeating-linear-gradient(var(--paper) 0px, var(--paper) 27px, var(--line) 28px),
+    var(--paper);
+  font-family:'Source Serif 4', serif;
+  color:var(--ink);
+  min-height:100vh;
+  padding:32px 16px 64px;
+}
+
+.wrap{max-width:760px;margin:0 auto;}
+
+.masthead{text-align:center;margin-bottom:28px;}
+.masthead h1{
+  font-family:'Special Elite', monospace;
+  font-size:2rem;
+  letter-spacing:1px;
+  margin:0 0 4px;
+  color:var(--ink);
+}
+.masthead p{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:0.78rem;
+  color:var(--pencil);
+  text-transform:uppercase;
+  letter-spacing:2px;
+  margin:0;
+}
+
+.tabs{display:flex;gap:4px;margin-bottom:-1px;position:relative;z-index:2;padding-left:8px;}
+.tab{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:0.85rem;
+  padding:10px 20px 12px;
+  background:var(--paper-2);
+  border:1px solid var(--line);
+  border-bottom:none;
+  border-radius:8px 8px 0 0;
+  cursor:pointer;
+  color:var(--pencil);
+  transition:background .15s, color .15s;
+}
+.tab:hover{color:var(--ink);}
+.tab.active{background:var(--paper);color:var(--ink);font-weight:600;box-shadow: 0 -2px 6px var(--shadow);}
+
+.sheet{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:0 10px 10px 10px;
+  padding:36px 32px;
+  box-shadow:0 8px 24px var(--shadow);
+  position:relative;
+  z-index:1;
+}
+
+h2.section-title{
+  font-family:'Special Elite', monospace;
+  font-size:1.15rem;
+  margin:0 0 20px;
+  color:var(--ink);
+  border-bottom:2px solid var(--ink);
+  padding-bottom:8px;
+}
+
+label.field-label{
+  display:block;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:0.72rem;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  color:var(--pencil);
+  margin:16px 0 6px;
+}
+input[type=text], input[type=password]{
+  width:100%;
+  padding:10px 12px;
+  font-family:'Source Serif 4', serif;
+  font-size:1rem;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:#fff;
+  color:var(--ink);
+}
+input[type=text]:focus, input[type=password]:focus{
+  outline:2px solid var(--ink);
+  outline-offset:1px;
+}
+textarea{
+  width:100%;
+  padding:10px 12px;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:0.85rem;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:#fff;
+  color:var(--ink);
+}
+
+button{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:0.85rem;
+  letter-spacing:0.5px;
+  padding:11px 22px;
+  border-radius:6px;
+  border:1px solid var(--ink);
+  background:var(--ink);
+  color:var(--paper);
+  cursor:pointer;
+  transition:transform .1s, background .15s;
+}
+button:hover{background:#2c3a5e;}
+button:active{transform:scale(0.98);}
+button.secondary{background:transparent;color:var(--ink);}
+button.secondary:hover{background:var(--paper-2);}
+button.danger{
+  background:transparent;
+  border-color:var(--red);
+  color:var(--red);
+  font-size:0.72rem;
+  padding:6px 10px;
+}
+button.danger:hover{background:var(--red);color:#fff;}
+button:focus-visible{outline:3px solid var(--red); outline-offset:2px;}
+
+.option-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);}
+.option-row:last-child{border-bottom:none;}
+.option-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--ink);flex-shrink:0;}
+.option-row input[type=text]{flex:1;}
+
+.q-card{
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:18px 20px;
+  margin-bottom:16px;
+  background:var(--paper-2);
+}
+.q-card .q-text{font-weight:600;margin-bottom:10px;}
+.q-card .q-meta{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:0.68rem;
+  color:var(--pencil);
+  margin-top:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.paper-card{
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:18px 20px;
+  margin-bottom:14px;
+  background:#fff;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.paper-card .p-title{font-family:'Special Elite', monospace;font-size:1.05rem;}
+.paper-card .p-meta{font-family:'IBM Plex Mono', monospace;font-size:0.7rem;color:var(--pencil);margin-top:4px;}
+.paper-card .p-actions{display:flex;gap:8px;}
+
+.quiz-option{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px 14px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  margin-bottom:8px;
+  cursor:pointer;
+  transition:background .12s, border-color .12s;
+  background:#fff;
+}
+.quiz-option:hover{border-color:var(--ink);}
+.quiz-option.checked{background:var(--paper-2); border-color:var(--ink);}
+.quiz-option input{width:18px;height:18px;accent-color:var(--ink);flex-shrink:0;}
+
+.q-number{font-family:'Special Elite', monospace;font-size:0.75rem;color:var(--red);}
+
+.score-hero{text-align:center;padding:20px 0 8px;}
+.score-hero .big{font-family:'IBM Plex Mono', monospace;font-size:3.4rem;font-weight:600;color:var(--ink);}
+.score-hero .sub{font-family:'IBM Plex Mono', monospace;font-size:0.85rem;color:var(--pencil);text-transform:uppercase;letter-spacing:2px;}
+
+.mark-svg{width:26px;height:26px;flex-shrink:0;}
+.mark-svg path{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:draw .5s ease forwards;}
+@keyframes draw{to{stroke-dashoffset:0;}}
+
+table.report{width:100%;border-collapse:collapse;font-family:'IBM Plex Mono', monospace;font-size:0.8rem;}
+table.report th, table.report td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);}
+table.report th{text-transform:uppercase;font-size:0.66rem;letter-spacing:1px;color:var(--pencil);}
+
+.empty-state{text-align:center;padding:40px 20px;color:var(--pencil);font-family:'IBM Plex Mono', monospace;font-size:0.85rem;}
+
+.msg{font-family:'IBM Plex Mono', monospace;font-size:0.78rem;padding:10px 14px;border-radius:6px;margin-bottom:16px;}
+.msg.error{background:#FBE9E7;color:var(--red);border:1px solid var(--red);}
+.msg.ok{background:#E7F3ED;color:var(--green);border:1px solid var(--green);}
+
+.row-between{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+.hint{font-family:'IBM Plex Mono', monospace;font-size:0.68rem;color:var(--pencil);margin-top:4px;}
+select{
+  width:100%;
+  padding:10px 12px;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:0.85rem;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:#fff;
+  color:var(--ink);
+}
+
+@media (max-width:600px){
+  .sheet{padding:24px 18px;}
+  .masthead h1{font-size:1.5rem;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead">
+    <h1>The Answer Sheet</h1>
+    <p>Test Portal</p>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<script>
+const ADMIN_PASSWORD = "admin123";
+
+let view = "student-name";
+let adminAuthed = false;
+let papers = [];              // [{id, title, questions:[{id,text,options,correct}]}]
+let attempts = [];            // [{id, paperId, paperTitle, name, score, total, timestamp, detail}]
+let studentName = "";
+let currentPaperId = null;    // paper the student picked / admin is managing
+let currentAnswers = {};      // {qId: Set(indices)}
+let lastResult = null;
+let reportFilterPaperId = "all";
+
+// ---------- storage ----------
+async function loadPapers(){
+  try{
+    const r = await window.storage.get('quiz:papers', true);
+    papers = r ? JSON.parse(r.value) : [];
+  }catch(e){ papers = []; }
+}
+async function savePapers(){
+  try{ await window.storage.set('quiz:papers', JSON.stringify(papers), true); }
+  catch(e){ console.error('save papers failed', e); }
+}
+async function loadAttempts(){
+  try{
+    const r = await window.storage.get('quiz:attempts', true);
+    attempts = r ? JSON.parse(r.value) : [];
+  }catch(e){ attempts = []; }
+}
+async function saveAttempts(){
+  try{ await window.storage.set('quiz:attempts', JSON.stringify(attempts), true); }
+  catch(e){ console.error('save attempts failed', e); }
+}
+
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function esc(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function getPaper(id){ return papers.find(p => p.id === id); }
+
+// ---------- tabs ----------
+function renderTabs(){
+  const tabs = document.getElementById('tabs');
+  const studentActive = view.startsWith('student') || view === 'quiz' || view === 'result';
+  const adminActive = view.startsWith('admin');
+  tabs.innerHTML = `
+    <div class="tab ${studentActive?'active':''}" onclick="goStudent()">Take Test</div>
+    <div class="tab ${adminActive?'active':''}" onclick="goAdmin()">Admin</div>
+  `;
+}
+function goStudent(){
+  view = studentName ? 'student-papers' : 'student-name';
+  currentAnswers = {};
+  render();
+}
+function goAdmin(){
+  view = adminAuthed ? 'admin-papers' : 'admin-login';
+  render();
+}
+
+// ---------- main render ----------
+function render(){
+  renderTabs();
+  const sheet = document.getElementById('sheet');
+  if(view === 'student-name') sheet.innerHTML = viewStudentName();
+  else if(view === 'student-papers') sheet.innerHTML = viewStudentPapers();
+  else if(view === 'quiz') sheet.innerHTML = viewQuiz();
+  else if(view === 'result') sheet.innerHTML = viewResult();
+  else if(view === 'admin-login') sheet.innerHTML = viewAdminLogin();
+  else if(view === 'admin-papers') sheet.innerHTML = viewAdminPapers();
+  else if(view === 'admin-paper-detail') sheet.innerHTML = viewAdminPaperDetail();
+  else if(view === 'admin-report') sheet.innerHTML = viewAdminReport();
+}
+
+// ================= STUDENT =================
+function viewStudentName(){
+  return `
+    <h2 class="section-title">Before You Begin</h2>
+    <label class="field-label">Your Name</label>
+    <input type="text" id="nameInput" placeholder="e.g. Priya Menon" value="${esc(studentName)}">
+    <div style="margin-top:22px;">
+      <button onclick="confirmName()">Continue</button>
+    </div>
+  `;
+}
+function confirmName(){
+  const val = document.getElementById('nameInput').value.trim();
+  if(!val){ alert('Please enter your name to continue.'); return; }
+  studentName = val;
+  view = 'student-papers';
+  render();
+}
+
+function viewStudentPapers(){
+  const eligible = papers.filter(p => p.questions.length > 0);
+  if(eligible.length === 0){
+    return `
+      <h2 class="section-title">Choose a Test — ${esc(studentName)}</h2>
+      <div class="empty-state">No test papers are available yet. Please check back later.</div>
+    `;
+  }
+  const cards = eligible.map(p => `
+    <div class="paper-card">
+      <div>
+        <div class="p-title">${esc(p.title)}</div>
+        <div class="p-meta">${p.questions.length} question${p.questions.length===1?'':'s'}</div>
+      </div>
+      <button onclick="choosePaper('${p.id}')">Start</button>
+    </div>
+  `).join('');
+  return `
+    <h2 class="section-title">Choose a Test — ${esc(studentName)}</h2>
+    ${cards}
+  `;
+}
+// note: function name kept plain below (typo-safe alias)
+function choosePaper(id){ startPaper(id); }
+function startPaper(id){
+  currentPaperId = id;
+  currentAnswers = {};
+  view = 'quiz';
+  render();
+}
+
+function viewQuiz(){
+  const paper = getPaper(currentPaperId);
+  if(!paper || paper.questions.length === 0){
+    return `<div class="empty-state">This test has no questions.</div>`;
+  }
+  const qHtml = paper.questions.map((q, idx) => {
+    const selected = currentAnswers[q.id] || new Set();
+    const opts = q.options.map((opt, i) => `
+      <label class="quiz-option ${selected.has(i)?'checked':''}">
+        <input type="checkbox" ${selected.has(i)?'checked':''} onchange="toggleAnswer('${q.id}', ${i})">
+        <span>${esc(opt)}</span>
+      </label>
+    `).join('');
+    return `
+      <div class="q-card">
+        <div class="q-number">Question ${idx+1} of ${paper.questions.length}</div>
+        <div class="q-text">${esc(q.text)}</div>
+        ${opts}
+      </div>
+    `;
+  }).join('');
+  return `
+    <h2 class="section-title">${esc(paper.title)} — ${esc(studentName)}</h2>
+    ${qHtml}
+    <div class="row-between">
+      <button class="secondary" onclick="view='student-papers';render();">Back to Test List</button>
+      <button onclick="submitTest()">Submit Test</button>
+    </div>
+  `;
+}
+function toggleAnswer(qId, i){
+  if(!currentAnswers[qId]) currentAnswers[qId] = new Set();
+  const set = currentAnswers[qId];
+  if(set.has(i)) set.delete(i); else set.add(i);
+  render();
+}
+async function submitTest(){
+  const paper = getPaper(currentPaperId);
+  let score = 0;
+  const detail = paper.questions.map(q => {
+    const selected = Array.from(currentAnswers[q.id] || []).sort();
+    const correct = [...q.correct].sort();
+    const isCorrect = JSON.stringify(selected) === JSON.stringify(correct);
+    if(isCorrect) score++;
+    return { qId: q.id, text: q.text, selected, correct, isCorrect };
+  });
+  lastResult = { paperTitle: paper.title, score, total: paper.questions.length, detail };
+  attempts.push({
+    id: uid(),
+    paperId: paper.id,
+    paperTitle: paper.title,
+    name: studentName,
+    score,
+    total: paper.questions.length,
+    timestamp: new Date().toISOString(),
+    detail
+  });
+  await saveAttempts();
+  view = 'result';
+  render();
+}
+
+function viewResult(){
+  const r = lastResult;
+  const rows = r.detail.map((d, idx) => {
+    const mark = d.isCorrect
+      ? `<svg class="mark-svg" viewBox="0 0 24 24"><path d="M4 13 L10 19 L20 6" stroke="var(--green)"/></svg>`
+      : `<svg class="mark-svg" viewBox="0 0 24 24"><path d="M5 5 L19 19" stroke="var(--red)"/><path d="M19 5 L5 19" stroke="var(--red)"/></svg>`;
+    return `
+      <div class="q-card" style="display:flex;align-items:flex-start;gap:12px;">
+        ${mark}
+        <div style="flex:1;">
+          <div class="q-text">${idx+1}. ${esc(d.text)}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  return `
+    <div class="score-hero">
+      <div class="big">${r.score} / ${r.total}</div>
+      <div class="sub">${esc(r.paperTitle)} — ${esc(studentName)}</div>
+    </div>
+    ${rows}
+    <button class="secondary" onclick="view='student-papers';render();">Choose Another Test</button>
+  `;
+}
+
+// ================= ADMIN =================
+function viewAdminLogin(){
+  return `
+    <h2 class="section-title">Admin Access</h2>
+    <label class="field-label">Password</label>
+    <input type="password" id="pwInput" placeholder="Enter admin password">
+    <div id="loginMsg"></div>
+    <div style="margin-top:18px;">
+      <button onclick="tryAdminLogin()">Enter</button>
+    </div>
+  `;
+}
+function tryAdminLogin(){
+  const val = document.getElementById('pwInput').value;
+  if(val === ADMIN_PASSWORD){
+    adminAuthed = true;
+    view = 'admin-papers';
+    render();
+  } else {
+    document.getElementById('loginMsg').innerHTML = `<div class="msg error">Incorrect password. Try again.</div>`;
+  }
+}
+function adminSubtabs(active){
+  return `
+    <div class="row-between" style="margin-bottom:18px;">
+      <div style="display:flex;gap:8px;">
+        <button class="${active==='papers'?'':'secondary'}" onclick="view='admin-papers';render();">Papers</button>
+        <button class="${active==='report'?'':'secondary'}" onclick="view='admin-report';render();">Report</button>
+      </div>
+      <button class="secondary" onclick="adminLogout()">Log Out</button>
+    </div>
+  `;
+}
+function adminLogout(){ adminAuthed = false; view = 'admin-login'; render(); }
+
+function viewAdminPapers(){
+  const list = papers.length === 0
+    ? `<div class="empty-state">No test papers yet. Create your first one below.</div>`
+    : papers.map(p => `
+      <div class="paper-card">
+        <div>
+          <div class="p-title">${esc(p.title)}</div>
+          <div class="p-meta">${p.questions.length} question${p.questions.length===1?'':'s'}</div>
+        </div>
+        <div class="p-actions">
+          <button class="secondary" onclick="openPaperDetail('${p.id}')">Manage Questions</button>
+          <button class="danger" onclick="deletePaper('${p.id}')">Delete</button>
+        </div>
+      </div>
+    `).join('');
+  return `
+    ${adminSubtabs('papers')}
+    <h2 class="section-title">Test Papers (${papers.length})</h2>
+    ${list}
+    <h2 class="section-title" style="margin-top:32px;">Create New Paper</h2>
+    <label class="field-label">Paper Heading</label>
+    <input type="text" id="paperTitle" placeholder="e.g. Mathematics — Unit 1">
+    <div id="paperMsg"></div>
+    <div style="margin-top:16px;">
+      <button onclick="createPaper()">Create Paper</button>
+    </div>
+  `;
+}
+async function createPaper(){
+  const title = document.getElementById('paperTitle').value.trim();
+  const msgEl = document.getElementById('paperMsg');
+  if(!title){
+    msgEl.innerHTML = `<div class="msg error">Please enter a heading for the paper.</div>`;
+    return;
+  }
+  papers.push({ id: uid(), title, questions: [] });
+  await savePapers();
+  render();
+}
+async function deletePaper(id){
+  const p = getPaper(id);
+  if(!confirm(`Delete "${p.title}" and all its questions? This cannot be undone.`)) return;
+  papers = papers.filter(p => p.id !== id);
+  await savePapers();
+  render();
+}
+function openPaperDetail(id){
+  currentPaperId = id;
+  view = 'admin-paper-detail';
+  render();
+}
+
+function viewAdminPaperDetail(){
+  const paper = getPaper(currentPaperId);
+  if(!paper){ view = 'admin-papers'; render(); return ''; }
+  const list = paper.questions.length === 0
+    ? `<div class="empty-state">No questions yet. Add below.</div>`
+    : paper.questions.map((q, idx) => `
+      <div class="q-card">
+        <div class="q-text">${idx+1}. ${esc(q.text)}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--pencil);">
+          ${q.options.map((o,i) => `${q.correct.includes(i)?'✓':'—'} ${esc(o)}`).join('<br>')}
+        </div>
+        <div class="q-meta">
+          <span>${q.correct.length} correct answer${q.correct.length===1?'':'s'}</span>
+          <button class="danger" onclick="deleteQuestion('${q.id}')">Delete</button>
+        </div>
+      </div>
+    `).join('');
+  return `
+    <button class="secondary" onclick="view='admin-papers';render();" style="margin-bottom:18px;">← Back to Papers</button>
+    <h2 class="section-title">${esc(paper.title)}</h2>
+    ${list}
+
+    <h2 class="section-title" style="margin-top:32px;">Add One Question</h2>
+    <label class="field-label">Question Text</label>
+    <input type="text" id="qText" placeholder="e.g. What is the capital of France?">
+    <label class="field-label">Options (tick the correct one — tick more than one if several are correct)</label>
+    ${[0,1,2,3].map(i => `
+      <div class="option-row">
+        <input type="checkbox" id="opt${i}chk">
+        <input type="text" id="opt${i}text" placeholder="Option ${i+1}">
+      </div>
+    `).join('')}
+    <div id="addMsg"></div>
+    <div style="margin-top:18px;">
+      <button onclick="addQuestion()">Add Question</button>
+    </div>
+
+    <h2 class="section-title" style="margin-top:32px;">Bulk Add Questions</h2>
+    <p class="hint" style="margin-bottom:10px;">One question per line, fields separated by <code>|</code>, correct letter(s) last. Works well pasting straight out of Excel/Sheets.</p>
+    <pre style="background:var(--paper-2);border:1px solid var(--line);border-radius:6px;padding:12px 14px;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;overflow-x:auto;white-space:pre;line-height:1.6;">Capital of France? | Paris | London | Berlin | Madrid | A
+2 + 2 = ? | 3 | 4 | 5 | 6 | B
+Which are primes? | 4 | 7 | 9 | 11 | B,D</pre>
+    <label class="field-label">Paste Questions Here</label>
+    <textarea id="bulkInput" rows="8" placeholder="Question text | Option A | Option B | Option C | Option D | CorrectLetter(s)"></textarea>
+    <div id="bulkMsg"></div>
+    <div style="margin-top:14px;">
+      <button onclick="bulkAddQuestions()">Import Questions</button>
+    </div>
+  `;
+}
+
+async function addQuestion(){
+  const paper = getPaper(currentPaperId);
+  const text = document.getElementById('qText').value.trim();
+  const opts = [0,1,2,3].map(i => document.getElementById(`opt${i}text`).value.trim());
+  const corrects = [0,1,2,3].filter(i => document.getElementById(`opt${i}chk`).checked);
+  const msgEl = document.getElementById('addMsg');
+
+  if(!text || opts.some(o => !o)){
+    msgEl.innerHTML = `<div class="msg error">Please fill in the question and all 4 options.</div>`;
+    return;
+  }
+  if(corrects.length === 0){
+    msgEl.innerHTML = `<div class="msg error">Please tick at least one correct option.</div>`;
+    return;
+  }
+  paper.questions.push({ id: uid(), text, options: opts, correct: corrects });
+  await savePapers();
+  msgEl.innerHTML = `<div class="msg ok">Question added.</div>`;
+  render();
+}
+
+async function bulkAddQuestions(){
+  const paper = getPaper(currentPaperId);
+  const raw = document.getElementById('bulkInput').value;
+  const msgEl = document.getElementById('bulkMsg');
+  const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+  if(lines.length === 0){
+    msgEl.innerHTML = `<div class="msg error">Paste at least one question line first.</div>`;
+    return;
+  }
+
+  const errors = [];
+  const toAdd = [];
+
+  lines.forEach((line, idx) => {
+    const lineNum = idx + 1;
+    const parts = line.split('|').map(p => p.trim());
+    if(parts.length !== 6){
+      errors.push(`Line ${lineNum}: expected 6 fields separated by "|", found ${parts.length}.`);
+      return;
+    }
+    const text = parts[0];
+    const options = parts.slice(1, 5);
+    const correctRaw = parts[5];
+    if(!text || options.some(o => !o)){
+      errors.push(`Line ${lineNum}: question text and all 4 options must be non-empty.`);
+      return;
+    }
+    const letters = correctRaw.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+    if(letters.length === 0){
+      errors.push(`Line ${lineNum}: missing correct answer letter(s) (e.g. A or B,D).`);
+      return;
+    }
+    const correctIdx = [];
+    let bad = false;
+    letters.forEach(l => {
+      const i = 'ABCD'.indexOf(l);
+      if(i === -1){ bad = true; return; }
+      correctIdx.push(i);
+    });
+    if(bad){
+      errors.push(`Line ${lineNum}: correct answer letters must be A, B, C, or D (got "${correctRaw}").`);
+      return;
+    }
+    toAdd.push({ id: uid(), text, options, correct: correctIdx });
+  });
+
+  if(toAdd.length > 0){
+    paper.questions.push(...toAdd);
+    await savePapers();
+  }
+
+  let html = '';
+  if(toAdd.length > 0){
+    html += `<div class="msg ok">Imported ${toAdd.length} question${toAdd.length===1?'':'s'}.</div>`;
+  }
+  if(errors.length > 0){
+    html += `<div class="msg error">${errors.length} line${errors.length===1?'':'s'} skipped:<br>${errors.map(esc).join('<br>')}</div>`;
+  }
+  msgEl.innerHTML = html;
+  if(toAdd.length > 0){
+    document.getElementById('bulkInput').value = '';
+  }
+  render();
+}
+
+async function deleteQuestion(id){
+  const paper = getPaper(currentPaperId);
+  if(!confirm('Delete this question?')) return;
+  paper.questions = paper.questions.filter(q => q.id !== id);
+  await savePapers();
+  render();
+}
+
+function viewAdminReport(){
+  const options = `<option value="all">All Papers</option>` + papers.map(p => `<option value="${p.id}">${esc(p.title)}</option>`).join('');
+  const filtered = reportFilterPaperId === 'all' ? attempts : attempts.filter(a => a.paperId === reportFilterPaperId);
+
+  if(attempts.length === 0){
+    return `${adminSubtabs('report')}<h2 class="section-title">Report</h2><div class="empty-state">No attempts submitted yet.</div>`;
+  }
+  const sorted = [...filtered].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const rows = sorted.map(a => `
+    <tr>
+      <td>${esc(a.name)}</td>
+      <td>${esc(a.paperTitle)}</td>
+      <td>${a.score} / ${a.total}</td>
+      <td>${new Date(a.timestamp).toLocaleString()}</td>
+    </tr>
+  `).join('');
+  const avg = filtered.length > 0
+    ? (filtered.reduce((s,a)=>s+(a.total? a.score/a.total : 0),0)/filtered.length*100).toFixed(1)
+    : '0.0';
+  return `
+    ${adminSubtabs('report')}
+    <h2 class="section-title">Report — ${filtered.length} attempt${filtered.length===1?'':'s'}, avg ${avg}%</h2>
+    <label class="field-label">Filter by Paper</label>
+    <select id="reportFilter" onchange="reportFilterPaperId=this.value;render();">${options}</select>
+    <div style="margin-top:18px;">
+      ${filtered.length === 0 ? `<div class="empty-state">No attempts for this paper yet.</div>` : `
+      <table class="report">
+        <thead><tr><th>Name</th><th>Paper</th><th>Score</th><th>Submitted</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`}
+    </div>
+  `;
+}
+
+// ---------- init ----------
+async function init(){
+  document.getElementById('sheet').innerHTML = `<div class="empty-state">Loading…</div>`;
+  await Promise.all([loadPapers(), loadAttempts()]);
+  // restore select value after render for report filter
+  render();
+}
+init();
+</script>
+</body>
+</html>
