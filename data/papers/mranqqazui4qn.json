@@ -1,5 +1,19 @@
 {
   "id": "mranqqazui4qn",
   "title": "Maths",
-  "questions": []
+  "questions": [
+    {
+      "id": "mranrc12uv482",
+      "text": "1+1 =",
+      "options": [
+        "7",
+        "8",
+        "5",
+        "2"
+      ],
+      "correct": [
+        3
+      ]
+    }
+  ]
 }
