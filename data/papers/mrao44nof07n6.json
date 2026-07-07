@@ -3,19 +3,6 @@
   "title": "Osteology",
   "questions": [
     {
-      "id": "mrao4bgvufgf8",
-      "text": "Capital of France?",
-      "options": [
-        "Paris",
-        "London",
-        "Berlin",
-        "Madrid"
-      ],
-      "correct": [
-        0
-      ]
-    },
-    {
       "id": "mrao4bgv2axp7",
       "text": "The weakest point of the skull, formed by the junction of frontal, parietal, temporal, and sphenoid bones, is called?",
       "options": [
