@@ -237,6 +237,21 @@ table.report tr.report-row:hover{background:var(--paper-2);}
 .msg.error{background:#FBE9E7;color:var(--red);border:1px solid var(--red);}
 .msg.ok{background:#E7F3ED;color:var(--green);border:1px solid var(--green);}
 
+.spinner{
+  display:inline-block;
+  width:12px;
+  height:12px;
+  border:2px solid currentColor;
+  border-top-color:transparent;
+  border-radius:50%;
+  opacity:0.7;
+  animation:spin .6s linear infinite;
+  vertical-align:-2px;
+  margin-right:6px;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+button:disabled{cursor:default;opacity:0.85;}
+
 .row-between{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
 .hint{font-family:'IBM Plex Mono', monospace;font-size:0.68rem;color:var(--pencil);margin-top:4px;}
 select{
@@ -397,6 +412,17 @@ function uid(){ return Date.now().toString(36) + Math.random().toString(36).slic
 function esc(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function getPaper(id){ return paperCache[id]; }
 
+// Shows a spinner + label on a button while an async action runs. Call the
+// returned function to restore it (harmless no-op if the button's already
+// been replaced by a fresh render()).
+function setButtonLoading(btn, loadingText){
+  if(!btn) return () => {};
+  const original = { html: btn.innerHTML, disabled: btn.disabled };
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spinner"></span>${esc(loadingText || 'Working…')}`;
+  return () => { btn.innerHTML = original.html; btn.disabled = original.disabled; };
+}
+
 // ---------- session persistence (survive a page refresh, cleared when the tab closes) ----------
 const SESSION_KEY = 'answerSheet:session';
 function saveSession(){
@@ -518,7 +544,7 @@ function studentLogout(){
 async function startPaper(id){
   currentAnswers = {};
   const sheet = document.getElementById('sheet');
-  sheet.innerHTML = `<div class="empty-state">Loading…</div>`;
+  sheet.innerHTML = `<div class="empty-state"><span class="spinner"></span>Loading…</div>`;
   try{
     await loadPaper(id);
     currentPaperId = id;
@@ -556,7 +582,7 @@ function viewQuiz(){
     ${qHtml}
     <div class="row-between">
       <button class="secondary" onclick="view='student-papers';render();">Back to Test List</button>
-      <button onclick="submitTest()">Submit Test</button>
+      <button onclick="submitTest(event)">Submit Test</button>
     </div>
   `;
 }
@@ -564,7 +590,8 @@ function selectAnswer(qId, i){
   currentAnswers[qId] = new Set([i]);
   render();
 }
-async function submitTest(){
+async function submitTest(event){
+  const restore = setButtonLoading(event.currentTarget, 'Submitting…');
   const paper = getPaper(currentPaperId);
   let score = 0;
   const detail = paper.questions.map(q => {
@@ -590,6 +617,8 @@ async function submitTest(){
   }catch(e){
     alert('Could not save your result — please check your connection and try Submit again.');
     return;
+  }finally{
+    restore();
   }
   view = 'result';
   render();
@@ -669,7 +698,7 @@ function viewAdminPapers(){
         </div>
         <div class="p-actions">
           <button class="secondary" onclick="openPaperDetail('${p.id}')">Manage Questions</button>
-          <button class="danger" onclick="deletePaper('${p.id}')">Delete</button>
+          <button class="danger" onclick="deletePaper(event, '${p.id}')">Delete</button>
         </div>
       </div>
     `).join('');
@@ -682,22 +711,23 @@ function viewAdminPapers(){
     <input type="text" id="paperTitle" placeholder="e.g. Mathematics — Unit 1">
     <div id="paperMsg"></div>
     <div style="margin-top:16px;">
-      <button onclick="createPaper()">Create Paper</button>
+      <button onclick="createPaper(event)">Create Paper</button>
     </div>
 
     <h2 class="section-title" style="margin-top:32px;color:var(--red);">Danger Zone</h2>
     <p class="hint" style="margin-bottom:10px;">Permanently deletes every test paper, question, submitted result, and registered student name. This cannot be undone.</p>
     <div id="eraseMsg"></div>
     <div style="margin-top:10px;">
-      <button class="danger" onclick="eraseAllData()">Erase All Data</button>
+      <button class="danger" onclick="eraseAllData(event)">Erase All Data</button>
     </div>
   `;
 }
-async function eraseAllData(){
+async function eraseAllData(event){
   const typed = prompt('This permanently deletes ALL papers, questions, results, and registered users.\nType ERASE (all caps) to confirm.');
   if(typed !== 'ERASE') return;
   const msgEl = document.getElementById('eraseMsg');
-  msgEl.innerHTML = `<div class="empty-state">Erasing…</div>`;
+  msgEl.innerHTML = '';
+  const restore = setButtonLoading(event.currentTarget, 'Erasing…');
   try{
     for(const p of papersIndex){
       const { sha } = await ghGetJson(`data/papers/${p.id}.json`, null);
@@ -715,17 +745,24 @@ async function eraseAllData(){
   }catch(e){
     msgEl.innerHTML = `<div class="msg error">Failed to erase all data: ${esc(e.message)}</div>`;
     return;
+  }finally{
+    restore();
   }
   render();
 }
-async function createPaper(){
+async function createPaper(event){
   const title = document.getElementById('paperTitle').value.trim();
   const msgEl = document.getElementById('paperMsg');
   if(!title){
     msgEl.innerHTML = `<div class="msg error">Please enter a heading for the paper.</div>`;
     return;
   }
-  msgEl.innerHTML = `<div class="empty-state">Saving…</div>`;
+  if(papersIndex.some(p => p.title.trim().toLowerCase() === title.toLowerCase())){
+    msgEl.innerHTML = `<div class="msg error">A paper named "${esc(title)}" already exists. Choose a different heading.</div>`;
+    return;
+  }
+  msgEl.innerHTML = '';
+  const restore = setButtonLoading(event.currentTarget, 'Creating…');
   const id = uid();
   const paper = { id, title, questions: [] };
   try{
@@ -738,15 +775,18 @@ async function createPaper(){
   }catch(e){
     msgEl.innerHTML = `<div class="msg error">Failed to create paper: ${esc(e.message)}</div>`;
     return;
+  }finally{
+    restore();
   }
   currentPaperId = id;
   view = 'admin-paper-detail';
   render();
 }
-async function deletePaper(id){
+async function deletePaper(event, id){
   const entry = papersIndex.find(p => p.id === id);
   if(!entry) return;
   if(!confirm(`Delete "${entry.title}" and all its questions? This cannot be undone.`)) return;
+  const restore = setButtonLoading(event.currentTarget, 'Deleting…');
   try{
     const { json: idx, sha: idxSha } = await ghGetJson('data/papers-index.json', []);
     const newIdx = idx.filter(p => p.id !== id);
@@ -757,12 +797,14 @@ async function deletePaper(id){
     delete paperCache[id];
   }catch(e){
     alert(`Failed to delete paper: ${e.message}`);
+  }finally{
+    restore();
   }
   render();
 }
 async function openPaperDetail(id){
   const sheet = document.getElementById('sheet');
-  sheet.innerHTML = `<div class="empty-state">Loading…</div>`;
+  sheet.innerHTML = `<div class="empty-state"><span class="spinner"></span>Loading…</div>`;
   try{
     await loadPaper(id);
     currentPaperId = id;
@@ -787,7 +829,7 @@ function viewAdminPaperDetail(){
         </div>
         <div class="q-meta">
           <span>${q.correct.length} correct answer${q.correct.length===1?'':'s'}</span>
-          <button class="danger" onclick="deleteQuestion('${q.id}')">Delete</button>
+          <button class="danger" onclick="deleteQuestion(event, '${q.id}')">Delete</button>
         </div>
       </div>
     `).join('');
@@ -808,7 +850,7 @@ function viewAdminPaperDetail(){
     `).join('')}
     <div id="addMsg"></div>
     <div style="margin-top:18px;">
-      <button onclick="addQuestion()">Add Question</button>
+      <button onclick="addQuestion(event)">Add Question</button>
     </div>
 
     <h2 class="section-title" style="margin-top:32px;">Bulk Add Questions</h2>
@@ -820,12 +862,12 @@ Largest planet? | Earth | Mars | Jupiter | Venus | C</pre>
     <textarea id="bulkInput" rows="8" placeholder="Question text | Option A | Option B | Option C | Option D | CorrectLetter"></textarea>
     <div id="bulkMsg"></div>
     <div style="margin-top:14px;">
-      <button onclick="bulkAddQuestions()">Import Questions</button>
+      <button onclick="bulkAddQuestions(event)">Import Questions</button>
     </div>
   `;
 }
 
-async function addQuestion(){
+async function addQuestion(event){
   const paper = getPaper(currentPaperId);
   const text = document.getElementById('qText').value.trim();
   const opts = [0,1,2,3].map(i => document.getElementById(`opt${i}text`).value.trim());
@@ -840,18 +882,21 @@ async function addQuestion(){
     msgEl.innerHTML = `<div class="msg error">Please select the correct option.</div>`;
     return;
   }
+  const restore = setButtonLoading(event.currentTarget, 'Adding…');
   paper.questions.push({ id: uid(), text, options: opts, correct: corrects });
   try{
     await saveCurrentPaperAndIndex(paper);
   }catch(e){
     msgEl.innerHTML = `<div class="msg error">Failed to save question: ${esc(e.message)}</div>`;
     return;
+  }finally{
+    restore();
   }
   msgEl.innerHTML = `<div class="msg ok">Question added.</div>`;
   render();
 }
 
-async function bulkAddQuestions(){
+async function bulkAddQuestions(event){
   const paper = getPaper(currentPaperId);
   const raw = document.getElementById('bulkInput').value;
   const msgEl = document.getElementById('bulkMsg');
@@ -898,11 +943,14 @@ async function bulkAddQuestions(){
 
   if(toAdd.length > 0){
     paper.questions.push(...toAdd);
+    const restore = setButtonLoading(event.currentTarget, 'Importing…');
     try{
       await saveCurrentPaperAndIndex(paper);
     }catch(e){
       msgEl.innerHTML = `<div class="msg error">Failed to save imported questions: ${esc(e.message)}</div>`;
       return;
+    }finally{
+      restore();
     }
   }
 
@@ -920,22 +968,25 @@ async function bulkAddQuestions(){
   render();
 }
 
-async function deleteQuestion(id){
+async function deleteQuestion(event, id){
   const paper = getPaper(currentPaperId);
   if(!confirm('Delete this question?')) return;
+  const restore = setButtonLoading(event.currentTarget, 'Deleting…');
   paper.questions = paper.questions.filter(q => q.id !== id);
   try{
     await saveCurrentPaperAndIndex(paper);
   }catch(e){
     alert(`Failed to delete question: ${e.message}`);
     return;
+  }finally{
+    restore();
   }
   render();
 }
 
 async function goAdminReport(){
   const sheet = document.getElementById('sheet');
-  sheet.innerHTML = `<div class="empty-state">Loading…</div>`;
+  sheet.innerHTML = `<div class="empty-state"><span class="spinner"></span>Loading…</div>`;
   try{
     const { json } = await ghGetJson('data/results.json', []);
     attempts = json;
@@ -958,7 +1009,7 @@ function viewAdminReport(){
       <td>${esc(a.paperTitle)}</td>
       <td>${a.score} / ${a.total}</td>
       <td>${new Date(a.timestamp).toLocaleString()}</td>
-      <td><button class="danger" onclick="event.stopPropagation(); deleteAttempt('${a.id}')">Delete</button></td>
+      <td><button class="danger" onclick="event.stopPropagation(); deleteAttempt(event, '${a.id}')">Delete</button></td>
     </tr>
   `).join('');
   const avg = filtered.length > 0
@@ -985,8 +1036,9 @@ function openAttemptDetail(id){
   render();
 }
 
-async function deleteAttempt(id){
+async function deleteAttempt(event, id){
   if(!confirm('Delete this result? This cannot be undone.')) return;
+  const restore = setButtonLoading(event.currentTarget, 'Deleting…');
   try{
     const { json: results, sha } = await ghGetJson('data/results.json', []);
     const newResults = results.filter(a => a.id !== id);
@@ -995,6 +1047,8 @@ async function deleteAttempt(id){
   }catch(e){
     alert(`Failed to delete result: ${e.message}`);
     return;
+  }finally{
+    restore();
   }
   if(view === 'admin-attempt-detail' && currentAttemptId === id){
     view = 'admin-report';
@@ -1029,7 +1083,7 @@ function viewAttemptDetail(){
   return `
     <div class="row-between" style="margin-bottom:18px;">
       <button class="secondary" onclick="view='admin-report';render();">← Back to Report</button>
-      <button class="danger" onclick="deleteAttempt('${attempt.id}')">Delete This Result</button>
+      <button class="danger" onclick="deleteAttempt(event, '${attempt.id}')">Delete This Result</button>
     </div>
     <div class="score-hero">
       <div class="big">${attempt.score} / ${attempt.total}</div>
@@ -1042,7 +1096,7 @@ function viewAttemptDetail(){
 // ---------- init ----------
 async function init(){
   const sheet = document.getElementById('sheet');
-  sheet.innerHTML = `<div class="empty-state">Loading…</div>`;
+  sheet.innerHTML = `<div class="empty-state"><span class="spinner"></span>Loading…</div>`;
   if(!GITHUB_TOKEN || GITHUB_TOKEN.length < 30){
     sheet.innerHTML = `<div class="msg error">Setup needed: paste a GitHub fine-grained PAT (Contents: read/write on this repo) into the GITHUB_TOKEN constant in index.html, then reload.</div>`;
     renderTabs();
