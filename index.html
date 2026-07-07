@@ -250,9 +250,16 @@ select{
 <script>
 const ADMIN_PASSWORD = "admin123";
 
+const GH_OWNER = "rssreeraj99-a11y";
+const GH_REPO = "exam-prep";
+const GH_BRANCH = "main";
+const GITHUB_TOKEN = "PASTE_TOKEN_HERE"; // fine-grained PAT, Contents: Read & Write on this repo only
+const GH_API = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents`;
+
 let view = "student-name";
 let adminAuthed = false;
-let papers = [];              // [{id, title, questions:[{id,text,options,correct}]}]
+let papersIndex = [];         // [{id, title, questionCount}] from data/papers-index.json
+let paperCache = {};          // id -> full paper object {id, title, questions:[...]}
 let attempts = [];            // [{id, paperId, paperTitle, name, score, total, timestamp, detail}]
 let studentName = "";
 let currentPaperId = null;    // paper the student picked / admin is managing
@@ -260,31 +267,115 @@ let currentAnswers = {};      // {qId: Set(indices)}
 let lastResult = null;
 let reportFilterPaperId = "all";
 
-// ---------- storage ----------
-async function loadPapers(){
+// ---------- GitHub Contents API helpers ----------
+function ghHeaders(){
+  return {
+    'Authorization': `Bearer ${GITHUB_TOKEN}`,
+    'Accept': 'application/vnd.github.v3+json'
+  };
+}
+function b64EncodeUnicode(str){ return btoa(unescape(encodeURIComponent(str))); }
+function b64DecodeUnicode(str){ return decodeURIComponent(escape(atob(str))); }
+
+// Returns {json, sha}. On 404 returns {json: fallback, sha: null}.
+async function ghGetJson(path, fallback){
+  const url = `${GH_API}/${path}?ref=${GH_BRANCH}&_=${Date.now()}`;
+  const res = await fetch(url, { headers: ghHeaders() });
+  if(res.status === 404) return { json: fallback, sha: null };
+  if(!res.ok) throw new Error(`GitHub GET ${path} failed: ${res.status} ${await res.text()}`);
+  const body = await res.json();
+  const text = b64DecodeUnicode(body.content.replace(/\n/g, ''));
+  return { json: JSON.parse(text), sha: body.sha };
+}
+
+// Writes JSON to path. Pass sha to update an existing file, null to create a new one.
+async function ghPutJson(path, obj, sha, message){
+  const body = {
+    message: message || `Update ${path}`,
+    content: b64EncodeUnicode(JSON.stringify(obj, null, 2)),
+    branch: GH_BRANCH
+  };
+  if(sha) body.sha = sha;
+  const res = await fetch(`${GH_API}/${path}`, {
+    method: 'PUT',
+    headers: { ...ghHeaders(), 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if(!res.ok){
+    const errBody = await res.json().catch(()=>({}));
+    const err = new Error(`GitHub PUT ${path} failed: ${res.status} ${errBody.message||''}`);
+    err.status = res.status;
+    throw err;
+  }
+  return await res.json();
+}
+
+async function ghDeleteFile(path, sha, message){
+  const res = await fetch(`${GH_API}/${path}`, {
+    method: 'DELETE',
+    headers: { ...ghHeaders(), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: message || `Delete ${path}`, sha, branch: GH_BRANCH })
+  });
+  if(!res.ok) throw new Error(`GitHub DELETE ${path} failed: ${res.status}`);
+}
+
+// ---------- papers-index.json / per-paper files ----------
+async function loadPapersIndex(){
+  const { json } = await ghGetJson('data/papers-index.json', []);
+  papersIndex = json;
+}
+async function loadPaper(id){
+  if(paperCache[id]) return paperCache[id];
+  const { json } = await ghGetJson(`data/papers/${id}.json`, null);
+  if(json) paperCache[id] = json;
+  return json;
+}
+async function saveCurrentPaperAndIndex(paper){
+  const { sha } = await ghGetJson(`data/papers/${paper.id}.json`, null);
+  await ghPutJson(`data/papers/${paper.id}.json`, paper, sha, `Update paper ${paper.id}`);
+  paperCache[paper.id] = paper;
+  const { json: idx, sha: idxSha } = await ghGetJson('data/papers-index.json', []);
+  const entry = idx.find(p => p.id === paper.id);
+  if(entry){
+    entry.questionCount = paper.questions.length;
+    await ghPutJson('data/papers-index.json', idx, idxSha, `Sync questionCount for ${paper.id}`);
+    papersIndex = idx;
+  }
+}
+
+// ---------- data/results.json ----------
+async function appendResult(attempt, maxRetries=4){
+  for(let i=0;i<maxRetries;i++){
+    try{
+      const { json: results, sha } = await ghGetJson('data/results.json', []);
+      results.push(attempt);
+      await ghPutJson('data/results.json', results, sha, `Add result: ${attempt.name} — ${attempt.paperTitle}`);
+      attempts = results;
+      return;
+    }catch(e){
+      if(e.status === 409 && i < maxRetries-1){
+        await new Promise(r => setTimeout(r, 300 + Math.random()*400));
+        continue;
+      }
+      throw e;
+    }
+  }
+}
+
+// ---------- data/users.json ----------
+async function touchUserSeen(name){
   try{
-    const r = await window.storage.get('quiz:papers', true);
-    papers = r ? JSON.parse(r.value) : [];
-  }catch(e){ papers = []; }
-}
-async function savePapers(){
-  try{ await window.storage.set('quiz:papers', JSON.stringify(papers), true); }
-  catch(e){ console.error('save papers failed', e); }
-}
-async function loadAttempts(){
-  try{
-    const r = await window.storage.get('quiz:attempts', true);
-    attempts = r ? JSON.parse(r.value) : [];
-  }catch(e){ attempts = []; }
-}
-async function saveAttempts(){
-  try{ await window.storage.set('quiz:attempts', JSON.stringify(attempts), true); }
-  catch(e){ console.error('save attempts failed', e); }
+    const { json: users, sha } = await ghGetJson('data/users.json', []);
+    const exists = users.some(u => u.name.toLowerCase() === name.toLowerCase());
+    if(exists) return;
+    users.push({ id: uid(), name, firstSeen: new Date().toISOString() });
+    await ghPutJson('data/users.json', users, sha, `Register user: ${name}`);
+  }catch(e){ console.error('users.json update failed (non-fatal)', e); }
 }
 
 function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 function esc(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function getPaper(id){ return papers.find(p => p.id === id); }
+function getPaper(id){ return paperCache[id]; }
 
 // ---------- tabs ----------
 function renderTabs(){
@@ -331,16 +422,17 @@ function viewStudentName(){
     </div>
   `;
 }
-function confirmName(){
+async function confirmName(){
   const val = document.getElementById('nameInput').value.trim();
   if(!val){ alert('Please enter your name to continue.'); return; }
   studentName = val;
   view = 'student-papers';
   render();
+  await touchUserSeen(val);
 }
 
 function viewStudentPapers(){
-  const eligible = papers.filter(p => p.questions.length > 0);
+  const eligible = papersIndex.filter(p => p.questionCount > 0);
   if(eligible.length === 0){
     return `
       <h2 class="section-title">Choose a Test — ${esc(studentName)}</h2>
@@ -351,7 +443,7 @@ function viewStudentPapers(){
     <div class="paper-card">
       <div>
         <div class="p-title">${esc(p.title)}</div>
-        <div class="p-meta">${p.questions.length} question${p.questions.length===1?'':'s'}</div>
+        <div class="p-meta">${p.questionCount} question${p.questionCount===1?'':'s'}</div>
       </div>
       <button onclick="choosePaper('${p.id}')">Start</button>
     </div>
@@ -363,10 +455,18 @@ function viewStudentPapers(){
 }
 // note: function name kept plain below (typo-safe alias)
 function choosePaper(id){ startPaper(id); }
-function startPaper(id){
-  currentPaperId = id;
+async function startPaper(id){
   currentAnswers = {};
-  view = 'quiz';
+  const sheet = document.getElementById('sheet');
+  sheet.innerHTML = `<div class="empty-state">Loading…</div>`;
+  try{
+    await loadPaper(id);
+    currentPaperId = id;
+    view = 'quiz';
+  }catch(e){
+    sheet.innerHTML = `<div class="msg error">Could not load this test. Please try again.</div>`;
+    return;
+  }
   render();
 }
 
@@ -417,7 +517,7 @@ async function submitTest(){
     return { qId: q.id, text: q.text, selected, correct, isCorrect };
   });
   lastResult = { paperTitle: paper.title, score, total: paper.questions.length, detail };
-  attempts.push({
+  const attempt = {
     id: uid(),
     paperId: paper.id,
     paperTitle: paper.title,
@@ -426,8 +526,13 @@ async function submitTest(){
     total: paper.questions.length,
     timestamp: new Date().toISOString(),
     detail
-  });
-  await saveAttempts();
+  };
+  try{
+    await appendResult(attempt);
+  }catch(e){
+    alert('Could not save your result — please check your connection and try Submit again.');
+    return;
+  }
   view = 'result';
   render();
 }
@@ -484,7 +589,7 @@ function adminSubtabs(active){
     <div class="row-between" style="margin-bottom:18px;">
       <div style="display:flex;gap:8px;">
         <button class="${active==='papers'?'':'secondary'}" onclick="view='admin-papers';render();">Papers</button>
-        <button class="${active==='report'?'':'secondary'}" onclick="view='admin-report';render();">Report</button>
+        <button class="${active==='report'?'':'secondary'}" onclick="goAdminReport()">Report</button>
       </div>
       <button class="secondary" onclick="adminLogout()">Log Out</button>
     </div>
@@ -493,13 +598,13 @@ function adminSubtabs(active){
 function adminLogout(){ adminAuthed = false; view = 'admin-login'; render(); }
 
 function viewAdminPapers(){
-  const list = papers.length === 0
+  const list = papersIndex.length === 0
     ? `<div class="empty-state">No test papers yet. Create your first one below.</div>`
-    : papers.map(p => `
+    : papersIndex.map(p => `
       <div class="paper-card">
         <div>
           <div class="p-title">${esc(p.title)}</div>
-          <div class="p-meta">${p.questions.length} question${p.questions.length===1?'':'s'}</div>
+          <div class="p-meta">${p.questionCount} question${p.questionCount===1?'':'s'}</div>
         </div>
         <div class="p-actions">
           <button class="secondary" onclick="openPaperDetail('${p.id}')">Manage Questions</button>
@@ -509,7 +614,7 @@ function viewAdminPapers(){
     `).join('');
   return `
     ${adminSubtabs('papers')}
-    <h2 class="section-title">Test Papers (${papers.length})</h2>
+    <h2 class="section-title">Test Papers (${papersIndex.length})</h2>
     ${list}
     <h2 class="section-title" style="margin-top:32px;">Create New Paper</h2>
     <label class="field-label">Paper Heading</label>
@@ -527,20 +632,50 @@ async function createPaper(){
     msgEl.innerHTML = `<div class="msg error">Please enter a heading for the paper.</div>`;
     return;
   }
-  papers.push({ id: uid(), title, questions: [] });
-  await savePapers();
+  msgEl.innerHTML = `<div class="empty-state">Saving…</div>`;
+  const id = uid();
+  const paper = { id, title, questions: [] };
+  try{
+    await ghPutJson(`data/papers/${id}.json`, paper, null, `Create paper: ${title}`);
+    const { json: idx, sha: idxSha } = await ghGetJson('data/papers-index.json', []);
+    idx.push({ id, title, questionCount: 0 });
+    await ghPutJson('data/papers-index.json', idx, idxSha, `Add "${title}" to index`);
+    papersIndex = idx;
+    paperCache[id] = paper;
+  }catch(e){
+    msgEl.innerHTML = `<div class="msg error">Failed to create paper: ${esc(e.message)}</div>`;
+    return;
+  }
   render();
 }
 async function deletePaper(id){
-  const p = getPaper(id);
-  if(!confirm(`Delete "${p.title}" and all its questions? This cannot be undone.`)) return;
-  papers = papers.filter(p => p.id !== id);
-  await savePapers();
+  const entry = papersIndex.find(p => p.id === id);
+  if(!entry) return;
+  if(!confirm(`Delete "${entry.title}" and all its questions? This cannot be undone.`)) return;
+  try{
+    const { json: idx, sha: idxSha } = await ghGetJson('data/papers-index.json', []);
+    const newIdx = idx.filter(p => p.id !== id);
+    await ghPutJson('data/papers-index.json', newIdx, idxSha, `Remove "${entry.title}" from index`);
+    papersIndex = newIdx;
+    const { sha: fileSha } = await ghGetJson(`data/papers/${id}.json`, null);
+    if(fileSha) await ghDeleteFile(`data/papers/${id}.json`, fileSha, `Delete paper file ${id}`);
+    delete paperCache[id];
+  }catch(e){
+    alert(`Failed to delete paper: ${e.message}`);
+  }
   render();
 }
-function openPaperDetail(id){
-  currentPaperId = id;
-  view = 'admin-paper-detail';
+async function openPaperDetail(id){
+  const sheet = document.getElementById('sheet');
+  sheet.innerHTML = `<div class="empty-state">Loading…</div>`;
+  try{
+    await loadPaper(id);
+    currentPaperId = id;
+    view = 'admin-paper-detail';
+  }catch(e){
+    sheet.innerHTML = `<div class="msg error">Could not load this paper.</div>`;
+    return;
+  }
   render();
 }
 
@@ -611,7 +746,12 @@ async function addQuestion(){
     return;
   }
   paper.questions.push({ id: uid(), text, options: opts, correct: corrects });
-  await savePapers();
+  try{
+    await saveCurrentPaperAndIndex(paper);
+  }catch(e){
+    msgEl.innerHTML = `<div class="msg error">Failed to save question: ${esc(e.message)}</div>`;
+    return;
+  }
   msgEl.innerHTML = `<div class="msg ok">Question added.</div>`;
   render();
 }
@@ -665,7 +805,12 @@ async function bulkAddQuestions(){
 
   if(toAdd.length > 0){
     paper.questions.push(...toAdd);
-    await savePapers();
+    try{
+      await saveCurrentPaperAndIndex(paper);
+    }catch(e){
+      msgEl.innerHTML = `<div class="msg error">Failed to save imported questions: ${esc(e.message)}</div>`;
+      return;
+    }
   }
 
   let html = '';
@@ -686,7 +831,23 @@ async function deleteQuestion(id){
   const paper = getPaper(currentPaperId);
   if(!confirm('Delete this question?')) return;
   paper.questions = paper.questions.filter(q => q.id !== id);
-  await savePapers();
+  try{
+    await saveCurrentPaperAndIndex(paper);
+  }catch(e){
+    alert(`Failed to delete question: ${e.message}`);
+    return;
+  }
+  render();
+}
+
+async function goAdminReport(){
+  const sheet = document.getElementById('sheet');
+  sheet.innerHTML = `<div class="empty-state">Loading…</div>`;
+  try{
+    const { json } = await ghGetJson('data/results.json', []);
+    attempts = json;
+  }catch(e){ /* fall back to whatever attempts already holds */ }
+  view = 'admin-report';
   render();
 }
 
@@ -726,9 +887,23 @@ function viewAdminReport(){
 
 // ---------- init ----------
 async function init(){
-  document.getElementById('sheet').innerHTML = `<div class="empty-state">Loading…</div>`;
-  await Promise.all([loadPapers(), loadAttempts()]);
-  // restore select value after render for report filter
+  const sheet = document.getElementById('sheet');
+  sheet.innerHTML = `<div class="empty-state">Loading…</div>`;
+  if(GITHUB_TOKEN === "PASTE_TOKEN_HERE"){
+    sheet.innerHTML = `<div class="msg error">Setup needed: paste a GitHub fine-grained PAT (Contents: read/write on this repo) into the GITHUB_TOKEN constant in index.html, then reload.</div>`;
+    renderTabs();
+    return;
+  }
+  try{
+    await Promise.all([
+      loadPapersIndex(),
+      (async () => { const { json } = await ghGetJson('data/results.json', []); attempts = json; })()
+    ]);
+  }catch(e){
+    sheet.innerHTML = `<div class="msg error">Could not load data from GitHub: ${esc(e.message)}</div>`;
+    renderTabs();
+    return;
+  }
   render();
 }
 init();
