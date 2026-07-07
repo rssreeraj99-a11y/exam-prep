@@ -739,6 +739,8 @@ async function createPaper(){
     msgEl.innerHTML = `<div class="msg error">Failed to create paper: ${esc(e.message)}</div>`;
     return;
   }
+  currentPaperId = id;
+  view = 'admin-paper-detail';
   render();
 }
 async function deletePaper(id){
