@@ -145,7 +145,7 @@ button:focus-visible{outline:3px solid var(--red); outline-offset:2px;}
 
 .option-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);}
 .option-row:last-child{border-bottom:none;}
-.option-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--ink);flex-shrink:0;}
+.option-row input[type=checkbox], .option-row input[type=radio]{width:18px;height:18px;accent-color:var(--ink);flex-shrink:0;}
 .option-row input[type=text]{flex:1;}
 
 .q-card{
@@ -500,7 +500,7 @@ function viewQuiz(){
     const selected = currentAnswers[q.id] || new Set();
     const opts = q.options.map((opt, i) => `
       <label class="quiz-option ${selected.has(i)?'checked':''}">
-        <input type="checkbox" ${selected.has(i)?'checked':''} onchange="toggleAnswer('${q.id}', ${i})">
+        <input type="radio" name="q_${q.id}" ${selected.has(i)?'checked':''} onchange="selectAnswer('${q.id}', ${i})">
         <span>${esc(opt)}</span>
       </label>
     `).join('');
@@ -521,10 +521,8 @@ function viewQuiz(){
     </div>
   `;
 }
-function toggleAnswer(qId, i){
-  if(!currentAnswers[qId]) currentAnswers[qId] = new Set();
-  const set = currentAnswers[qId];
-  if(set.has(i)) set.delete(i); else set.add(i);
+function selectAnswer(qId, i){
+  currentAnswers[qId] = new Set([i]);
   render();
 }
 async function submitTest(){
@@ -725,10 +723,10 @@ function viewAdminPaperDetail(){
     <h2 class="section-title" style="margin-top:32px;">Add One Question</h2>
     <label class="field-label">Question Text</label>
     <input type="text" id="qText" placeholder="e.g. What is the capital of France?">
-    <label class="field-label">Options (tick the correct one — tick more than one if several are correct)</label>
+    <label class="field-label">Options (select the one correct answer)</label>
     ${[0,1,2,3].map(i => `
       <div class="option-row">
-        <input type="checkbox" id="opt${i}chk">
+        <input type="radio" name="newQCorrect" id="opt${i}chk">
         <input type="text" id="opt${i}text" placeholder="Option ${i+1}">
       </div>
     `).join('')}
@@ -738,12 +736,12 @@ function viewAdminPaperDetail(){
     </div>
 
     <h2 class="section-title" style="margin-top:32px;">Bulk Add Questions</h2>
-    <p class="hint" style="margin-bottom:10px;">One question per line, fields separated by <code>|</code>, correct letter(s) last. Works well pasting straight out of Excel/Sheets.</p>
+    <p class="hint" style="margin-bottom:10px;">One question per line, fields separated by <code>|</code>, correct letter last (one letter only). Works well pasting straight out of Excel/Sheets.</p>
     <pre style="background:var(--paper-2);border:1px solid var(--line);border-radius:6px;padding:12px 14px;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;overflow-x:auto;white-space:pre;line-height:1.6;">Capital of France? | Paris | London | Berlin | Madrid | A
 2 + 2 = ? | 3 | 4 | 5 | 6 | B
-Which are primes? | 4 | 7 | 9 | 11 | B,D</pre>
+Largest planet? | Earth | Mars | Jupiter | Venus | C</pre>
     <label class="field-label">Paste Questions Here</label>
-    <textarea id="bulkInput" rows="8" placeholder="Question text | Option A | Option B | Option C | Option D | CorrectLetter(s)"></textarea>
+    <textarea id="bulkInput" rows="8" placeholder="Question text | Option A | Option B | Option C | Option D | CorrectLetter"></textarea>
     <div id="bulkMsg"></div>
     <div style="margin-top:14px;">
       <button onclick="bulkAddQuestions()">Import Questions</button>
@@ -763,7 +761,7 @@ async function addQuestion(){
     return;
   }
   if(corrects.length === 0){
-    msgEl.innerHTML = `<div class="msg error">Please tick at least one correct option.</div>`;
+    msgEl.innerHTML = `<div class="msg error">Please select the correct option.</div>`;
     return;
   }
   paper.questions.push({ id: uid(), text, options: opts, correct: corrects });
@@ -807,21 +805,19 @@ async function bulkAddQuestions(){
     }
     const letters = correctRaw.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
     if(letters.length === 0){
-      errors.push(`Line ${lineNum}: missing correct answer letter(s) (e.g. A or B,D).`);
+      errors.push(`Line ${lineNum}: missing correct answer letter (e.g. A).`);
       return;
     }
-    const correctIdx = [];
-    let bad = false;
-    letters.forEach(l => {
-      const i = 'ABCD'.indexOf(l);
-      if(i === -1){ bad = true; return; }
-      correctIdx.push(i);
-    });
-    if(bad){
-      errors.push(`Line ${lineNum}: correct answer letters must be A, B, C, or D (got "${correctRaw}").`);
+    if(letters.length > 1){
+      errors.push(`Line ${lineNum}: only one correct answer letter is allowed (got "${correctRaw}").`);
       return;
     }
-    toAdd.push({ id: uid(), text, options, correct: correctIdx });
+    const i = 'ABCD'.indexOf(letters[0]);
+    if(i === -1){
+      errors.push(`Line ${lineNum}: correct answer letter must be A, B, C, or D (got "${correctRaw}").`);
+      return;
+    }
+    toAdd.push({ id: uid(), text, options, correct: [i] });
   });
 
   if(toAdd.length > 0){
