@@ -1,5 +1,1319 @@
 {
   "id": "mrji0wb4mr34n",
   "title": "Osteology Final Exam",
-  "questions": []
+  "questions": [
+    {
+      "id": "mrji1570aabyw",
+      "text": "Which bone forms the piriform aperture along with the maxilla in norma frontalis?",
+      "options": [
+        "Zygomatic bone",
+        "Nasal bones",
+        "Lacrimal bone",
+        "Palatine bone"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570ap6x1",
+      "text": "In norma frontalis, the smooth elevation between the eyebrows is called?",
+      "options": [
+        "Bregma",
+        "Glabella",
+        "Nasion",
+        "Lambda"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570yzct1",
+      "text": "The piriform aperture is bounded above by which bones?",
+      "options": [
+        "Nasal bones",
+        "Maxilla",
+        "Zygomatic bone",
+        "Lacrimal bone"
+      ],
+      "correct": [
+        0
+      ]
+    },
+    {
+      "id": "mrji1570rwdov",
+      "text": "The anterior nasal spine is located at the lower margin of which structure?",
+      "options": [
+        "Orbital margin",
+        "Piriform aperture",
+        "Zygomatic arch",
+        "Pterion"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570qpq8z",
+      "text": "The zygomaticofacial foramen is found on which bone?",
+      "options": [
+        "Maxilla",
+        "Zygomatic bone",
+        "Frontal bone",
+        "Nasal bone"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570pbtgn",
+      "text": "Norma verticalis is best studied from which view?",
+      "options": [
+        "Anterior",
+        "Superior",
+        "Posterior",
+        "Lateral"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570bs0mi",
+      "text": "The highest point on the sagittal suture is termed the?",
+      "options": [
+        "Bregma",
+        "Vertex",
+        "Lambda",
+        "Inion"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570s2ng7",
+      "text": "The parietal foramen transmits which structure?",
+      "options": [
+        "Middle meningeal artery",
+        "Emissary vein",
+        "Ophthalmic nerve",
+        "Facial nerve"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570w73mc",
+      "text": "The midline projection on the occipital bone used as a landmark is the?",
+      "options": [
+        "Mastoid process",
+        "External occipital protuberance",
+        "Styloid process",
+        "Zygomatic process"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570l5o3a",
+      "text": "The external occipital protuberance is also known as the?",
+      "options": [
+        "Nasion",
+        "Inion",
+        "Bregma",
+        "Asterion"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570wallt",
+      "text": "The superior nuchal line gives attachment to which muscle?",
+      "options": [
+        "Sternocleidomastoid",
+        "Trapezius",
+        "Temporalis",
+        "Masseter"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570k4e5k",
+      "text": "The temporal fossa is bounded below by the?",
+      "options": [
+        "Superior temporal line",
+        "Zygomatic arch",
+        "Coronal suture",
+        "Mastoid process"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570i1zbm",
+      "text": "Macewen's triangle is a surgical landmark for locating the?",
+      "options": [
+        "Pituitary fossa",
+        "Mastoid antrum",
+        "Maxillary sinus",
+        "Cavernous sinus"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570ebtsy",
+      "text": "The zygomatic process of the temporal bone unites anteriorly with which process to form the zygomatic arch?",
+      "options": [
+        "Frontal process of zygomatic bone",
+        "Temporal process of zygomatic bone",
+        "Maxillary process of zygomatic bone",
+        "Orbital process of frontal bone"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji15707ouot",
+      "text": "The median palatine suture lies between the palatine processes of which paired bone?",
+      "options": [
+        "Palatine bones",
+        "Maxillae",
+        "Zygomatic bones",
+        "Nasal bones"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570l2k1e",
+      "text": "The medial and lateral pterygoid plates are processes of which bone?",
+      "options": [
+        "Palatine bone",
+        "Sphenoid bone",
+        "Temporal bone",
+        "Ethmoid bone"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570qvrko",
+      "text": "The scaphoid fossa is located on the?",
+      "options": [
+        "Medial pterygoid plate",
+        "Lateral pterygoid plate",
+        "Palatine bone",
+        "Zygomatic bone"
+      ],
+      "correct": [
+        0
+      ]
+    },
+    {
+      "id": "mrji15708oe64",
+      "text": "Foramen lacerum is bounded by petrous temporal bone, sphenoid, and which other bone?",
+      "options": [
+        "Frontal bone",
+        "Occipital bone",
+        "Parietal bone",
+        "Zygomatic bone"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji15703rdov",
+      "text": "The carotid canal opens into the norma basalis in which bone?",
+      "options": [
+        "Sphenoid",
+        "Temporal",
+        "Occipital",
+        "Maxilla"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570799jh",
+      "text": "The frontal sinuses are located within which part of the frontal bone?",
+      "options": [
+        "Orbital part",
+        "Nasal part",
+        "Squamous part",
+        "Zygomatic process"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji15708xlhi",
+      "text": "Foramen caecum is found between frontal bone and which other bone?",
+      "options": [
+        "Ethmoid",
+        "Sphenoid",
+        "Maxilla",
+        "Nasal"
+      ],
+      "correct": [
+        0
+      ]
+    },
+    {
+      "id": "mrji1570536wn",
+      "text": "Granular foveolae on the internal surface of the parietal bone accommodate?",
+      "options": [
+        "Arachnoid granulations",
+        "Meningeal arteries",
+        "Emissary veins",
+        "Dural venous sinuses"
+      ],
+      "correct": [
+        0
+      ]
+    },
+    {
+      "id": "mrji1570hl7pq",
+      "text": "The parietal bone has how many borders?",
+      "options": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji1570vwnga",
+      "text": "The basilar part of occipital bone is also called the?",
+      "options": [
+        "Basiocciput",
+        "Squamous part",
+        "Condylar part",
+        "Petrous part"
+      ],
+      "correct": [
+        0
+      ]
+    },
+    {
+      "id": "mrji1570p60iv",
+      "text": "The pharyngeal tubercle is found on which part of the occipital bone?",
+      "options": [
+        "Squamous part",
+        "Condylar part",
+        "Basilar part",
+        "Mastoid part"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji1570748ne",
+      "text": "The occipital condyles articulate with which vertebra?",
+      "options": [
+        "Atlas (C1)",
+        "Axis (C2)",
+        "C3",
+        "C7"
+      ],
+      "correct": [
+        0
+      ]
+    },
+    {
+      "id": "mrji15707hvl5",
+      "text": "The squamous part of the temporal bone contributes to which fossa?",
+      "options": [
+        "Infratemporal fossa",
+        "Temporal fossa",
+        "Pterygopalatine fossa",
+        "Pterygoid fossa"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji15707s9uz",
+      "text": "The mandibular fossa and articular tubercle are features of which part of the temporal bone?",
+      "options": [
+        "Tympanic part",
+        "Squamous part",
+        "Petromastoid part",
+        "Styloid process"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570b2dde",
+      "text": "Which part of the temporal bone forms most of the external acoustic meatus?",
+      "options": [
+        "Squamous part",
+        "Tympanic part",
+        "Petromastoid part",
+        "Styloid process"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570a5mr5",
+      "text": "The mastoid antrum is located within which part of the temporal bone?",
+      "options": [
+        "Squamous part",
+        "Tympanic part",
+        "Mastoid part of petromastoid",
+        "Styloid process"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji157069cau",
+      "text": "The styloid process gives attachment to muscles including stylohyoid, styloglossus, and?",
+      "options": [
+        "Stylopharyngeus",
+        "Mylohyoid",
+        "Geniohyoid",
+        "Digastric"
+      ],
+      "correct": [
+        0
+      ]
+    },
+    {
+      "id": "mrji1570f4cw9",
+      "text": "The tympanomastoid fissure and petrotympanic fissure are found in which bone?",
+      "options": [
+        "Sphenoid",
+        "Temporal",
+        "Occipital",
+        "Ethmoid"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570zpp9q",
+      "text": "The sphenoid bone is often described as which shape?",
+      "options": [
+        "Butterfly/bat-shaped",
+        "Cross-shaped",
+        "Triangular",
+        "Circular"
+      ],
+      "correct": [
+        0
+      ]
+    },
+    {
+      "id": "mrji1570t6sq2",
+      "text": "The hypophyseal fossa is located within the?",
+      "options": [
+        "Greater wing",
+        "Lesser wing",
+        "Body of sphenoid",
+        "Pterygoid process"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji1570qlgpr",
+      "text": "The anterior and posterior clinoid processes flank the?",
+      "options": [
+        "Foramen ovale",
+        "Sella turcica",
+        "Optic canal",
+        "Pterygoid canal"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570iq3o6",
+      "text": "The optic canal is located in which part of the sphenoid?",
+      "options": [
+        "Greater wing",
+        "Lesser wing",
+        "Body",
+        "Pterygoid process"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570txmcj",
+      "text": "The pterygoid hamulus is a feature of the?",
+      "options": [
+        "Lateral pterygoid plate",
+        "Medial pterygoid plate",
+        "Greater wing",
+        "Body of sphenoid"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570co3so",
+      "text": "The pterygoid (Vidian) canal is located at the base of which structure?",
+      "options": [
+        "Lateral pterygoid plate",
+        "Medial pterygoid plate",
+        "Greater wing",
+        "Lesser wing"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570a3150",
+      "text": "The ethmoid bone contributes to which cranial fossa?",
+      "options": [
+        "Middle cranial fossa",
+        "Anterior cranial fossa",
+        "Posterior cranial fossa",
+        "None"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570uxli3",
+      "text": "The superior and middle nasal conchae are parts of the?",
+      "options": [
+        "Maxilla",
+        "Ethmoid labyrinth",
+        "Palatine bone",
+        "Vomer"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570two34",
+      "text": "The lamina papyracea forms part of the?",
+      "options": [
+        "Nasal septum",
+        "Medial orbital wall",
+        "Hard palate",
+        "Lateral pterygoid plate"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570iheub",
+      "text": "The uncinate process is a feature of the?",
+      "options": [
+        "Ethmoid labyrinth",
+        "Sphenoid body",
+        "Palatine bone",
+        "Maxilla"
+      ],
+      "correct": [
+        0
+      ]
+    },
+    {
+      "id": "mrji15701skyh",
+      "text": "Which process of the maxilla articulates with the frontal bone?",
+      "options": [
+        "Zygomatic process",
+        "Frontal process",
+        "Palatine process",
+        "Alveolar process"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570478gp",
+      "text": "The infraorbital groove and canal are located on which surface of the maxillary body?",
+      "options": [
+        "Anterior surface",
+        "Posterior surface",
+        "Superior (orbital) surface",
+        "Medial (nasal) surface"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji1570n8et7",
+      "text": "The greater palatine canal transmits the greater palatine nerve and?",
+      "options": [
+        "Ophthalmic artery",
+        "Greater palatine vessels",
+        "Middle meningeal artery",
+        "Facial vein"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570sdsbd",
+      "text": "Le Fort fractures are clinically associated with which bone?",
+      "options": [
+        "Mandible",
+        "Maxilla",
+        "Zygomatic bone",
+        "Temporal bone"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji15702hr70",
+      "text": "The two halves of the mandible fuse at the?",
+      "options": [
+        "Angle",
+        "Symphysis menti",
+        "Coronoid process",
+        "Condylar process"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570bjvg6",
+      "text": "The genial tubercles (mental spines) are located on the?",
+      "options": [
+        "External surface of body",
+        "Internal surface of body",
+        "Ramus",
+        "Coronoid process"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570gn9tu",
+      "text": "The submandibular fossa is found on which surface of the mandible?",
+      "options": [
+        "External",
+        "Internal",
+        "Superior",
+        "Coronoid"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570jl3qx",
+      "text": "The coronoid process of the mandible provides insertion for which muscle?",
+      "options": [
+        "Masseter",
+        "Temporalis",
+        "Medial pterygoid",
+        "Lateral pterygoid"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570g4gag",
+      "text": "The mandibular notch (sigmoid notch) lies between which two processes?",
+      "options": [
+        "Coronoid and condylar",
+        "Coronoid and angle",
+        "Condylar and angle",
+        "Symphysis and angle"
+      ],
+      "correct": [
+        0
+      ]
+    },
+    {
+      "id": "mrji1570oafwx",
+      "text": "The mandibular condyle articulates with the temporal bone to form the?",
+      "options": [
+        "TMJ",
+        "Zygomaticotemporal suture",
+        "Squamous suture",
+        "Pterygomandibular raphe"
+      ],
+      "correct": [
+        0
+      ]
+    },
+    {
+      "id": "mrji15705r7yv",
+      "text": "The pterygomasseteric sling attaches at the?",
+      "options": [
+        "Coronoid process",
+        "Symphysis menti",
+        "Angle of mandible",
+        "Mandibular notch"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji15703sl28",
+      "text": "Which foramen on the zygomatic bone transmits a branch of the zygomatic nerve to the temporal region?",
+      "options": [
+        "Zygomaticofacial foramen",
+        "Zygomaticotemporal foramen",
+        "Zygomatico-orbital foramen",
+        "Infraorbital foramen"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570ci82v",
+      "text": "The nasal bones articulate inferiorly with the?",
+      "options": [
+        "Frontal bone",
+        "Nasal cartilages",
+        "Ethmoid bone",
+        "Vomer"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji15708rryc",
+      "text": "The lacrimal bone is described as the?",
+      "options": [
+        "Largest bone of the face",
+        "Smallest bone of the face/skull",
+        "Strongest facial bone",
+        "Only mobile bone of the skull"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570kn0rh",
+      "text": "The horizontal plate of the palatine bone forms which part of the hard palate?",
+      "options": [
+        "Anterior 3/4",
+        "Posterior 1/4",
+        "Entire hard palate",
+        "Lateral wall only"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji157049nty",
+      "text": "The perpendicular plate of the palatine bone contributes to the?",
+      "options": [
+        "Hard palate only",
+        "Lateral wall of nasal cavity",
+        "Nasal septum",
+        "Orbital floor"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570j3pqo",
+      "text": "The palatine bone has how many processes?",
+      "options": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570p6s99",
+      "text": "The vomer articulates with the sphenoid at which part of the nasal septum?",
+      "options": [
+        "Anteroinferior",
+        "Posterosuperior",
+        "Lateral",
+        "Anterolateral"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji15708v8q5",
+      "text": "The inferior nasal concha forms the roof of which meatus?",
+      "options": [
+        "Superior meatus",
+        "Middle meatus",
+        "Inferior meatus",
+        "Sphenoethmoidal recess"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji1570ktpnx",
+      "text": "The nasolacrimal duct opens into which meatus?",
+      "options": [
+        "Superior meatus",
+        "Middle meatus",
+        "Inferior meatus",
+        "Sphenoethmoidal recess"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji1570mddat",
+      "text": "The hyoid bone is suspended from the styloid processes by the?",
+      "options": [
+        "Stylohyoid ligaments",
+        "Stylomandibular ligaments",
+        "Pterygomandibular raphe",
+        "Sphenomandibular ligaments"
+      ],
+      "correct": [
+        0
+      ]
+    },
+    {
+      "id": "mrji1570c7wms",
+      "text": "Which part of the hyoid bone projects upward from the junction of body and greater cornu?",
+      "options": [
+        "Lesser cornu",
+        "Greater cornu",
+        "Body",
+        "None"
+      ],
+      "correct": [
+        0
+      ]
+    },
+    {
+      "id": "mrji1570q10si",
+      "text": "The hyoglossus muscle attaches to which part of the hyoid bone?",
+      "options": [
+        "Body and greater cornu",
+        "Lesser cornu only",
+        "Styloid process",
+        "Mastoid process"
+      ],
+      "correct": [
+        0
+      ]
+    },
+    {
+      "id": "mrji1570yab3h",
+      "text": "Fracture of the hyoid bone is classically associated with which forensic scenario?",
+      "options": [
+        "Road traffic accident",
+        "Strangulation",
+        "Fall from height",
+        "Gunshot wound"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570yzkie",
+      "text": "The anterior cranial fossa is bounded posteriorly by the?",
+      "options": [
+        "Petrous ridge",
+        "Posterior border of lesser wing of sphenoid",
+        "Foramen magnum",
+        "Internal occipital crest"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570pks6s",
+      "text": "Which lobe of the brain rests on the anterior cranial fossa?",
+      "options": [
+        "Temporal lobe",
+        "Frontal lobe",
+        "Occipital lobe",
+        "Cerebellum"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570zoinn",
+      "text": "Which lobe of the brain is supported by the lateral parts of the middle cranial fossa?",
+      "options": [
+        "Frontal lobe",
+        "Temporal lobe",
+        "Occipital lobe",
+        "Parietal lobe"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570uwnic",
+      "text": "The posterior cranial fossa is bounded anteriorly by the?",
+      "options": [
+        "Cribriform plate",
+        "Clivus",
+        "Lesser wing of sphenoid",
+        "Orbital plate"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji15702tsde",
+      "text": "Which structures are supported by the posterior cranial fossa?",
+      "options": [
+        "Frontal lobes",
+        "Temporal lobes",
+        "Cerebellum, pons, medulla",
+        "Pituitary gland"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji1570hxqfl",
+      "text": "The internal occipital protuberance is a feature of which cranial fossa?",
+      "options": [
+        "Anterior",
+        "Middle",
+        "Posterior",
+        "None"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji1570e1kjz",
+      "text": "The hiatus for the greater petrosal nerve is found in which cranial fossa?",
+      "options": [
+        "Anterior",
+        "Middle",
+        "Posterior",
+        "None"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570cuspk",
+      "text": "Which foramen transmits the vertebral arteries into the cranial cavity?",
+      "options": [
+        "Jugular foramen",
+        "Foramen magnum",
+        "Foramen lacerum",
+        "Carotid canal"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1570xijj0",
+      "text": "The accessory meningeal artery passes through the?",
+      "options": [
+        "Foramen spinosum",
+        "Foramen ovale",
+        "Foramen rotundum",
+        "Foramen lacerum"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1571y0ni4",
+      "text": "Which foramen is largely filled with cartilage in life and is crossed by the internal carotid artery?",
+      "options": [
+        "Foramen ovale",
+        "Foramen spinosum",
+        "Foramen lacerum",
+        "Foramen rotundum"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji1571xx4xn",
+      "text": "The condylar canal transmits an emissary vein connecting the sigmoid sinus with the?",
+      "options": [
+        "Cavernous sinus",
+        "Vertebral venous plexus",
+        "Pterygoid venous plexus",
+        "Facial vein"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1571nfmhg",
+      "text": "Which foramen transmits the greater palatine nerve and vessels?",
+      "options": [
+        "Incisive foramen",
+        "Greater palatine foramen",
+        "Lesser palatine foramen",
+        "Pterygoid canal"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji15718bmr5",
+      "text": "The nerve of the pterygoid canal passes through which canal?",
+      "options": [
+        "Hypoglossal canal",
+        "Pterygoid (Vidian) canal",
+        "Optic canal",
+        "Carotid canal"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji15710yshm",
+      "text": "Which foramen transmits the internal jugular vein as it begins?",
+      "options": [
+        "Foramen magnum",
+        "Jugular foramen",
+        "Foramen lacerum",
+        "Stylomastoid foramen"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1571x1mgz",
+      "text": "The labyrinthine artery accompanies which nerves through the internal acoustic meatus?",
+      "options": [
+        "III and IV",
+        "V and VI",
+        "VII and VIII",
+        "IX and X"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji15719a5ch",
+      "text": "The suture between the parietal bone and the squamous part of the temporal bone is called the?",
+      "options": [
+        "Coronal suture",
+        "Sagittal suture",
+        "Squamous suture",
+        "Lambdoid suture"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji1571i403q",
+      "text": "Sutures function to allow slight mobility in infancy and permit growth at the?",
+      "options": [
+        "Center of the bone",
+        "Margins of the bone",
+        "Diploe",
+        "Foramina"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1571x76ym",
+      "text": "The anterolateral (sphenoidal) fontanelle is located at the?",
+      "options": [
+        "Bregma",
+        "Lambda",
+        "Pterion",
+        "Asterion"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji1571vwcdv",
+      "text": "The posterolateral (mastoid) fontanelle closes by approximately what age?",
+      "options": [
+        "2–3 months",
+        "12 months",
+        "18 months",
+        "3 years"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1571tsiv8",
+      "text": "Which fontanelle is triangular in shape?",
+      "options": [
+        "Anterior fontanelle",
+        "Posterior fontanelle",
+        "Anterolateral fontanelle",
+        "Posterolateral fontanelle"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1571g8hri",
+      "text": "Assessment of hydration status and intracranial pressure in infants commonly uses which landmark?",
+      "options": [
+        "Posterior fontanelle",
+        "Anterior fontanelle",
+        "Pterion",
+        "Asterion"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1571260oq",
+      "text": "In a newborn skull, which structure is notably absent or rudimentary?",
+      "options": [
+        "Foramen magnum",
+        "Frontal and maxillary sinuses",
+        "Cranial fossae",
+        "Occipital condyles"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1571ui0vf",
+      "text": "At birth, the angle of the mandible is approximately?",
+      "options": [
+        "90 degrees",
+        "110–120 degrees",
+        "160 degrees",
+        "180 degrees"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji15713nyiw",
+      "text": "The mastoid process develops in response to the pull of which muscle as the child begins holding up the head?",
+      "options": [
+        "Trapezius",
+        "Sternocleidomastoid",
+        "Masseter",
+        "Temporalis"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1571dwd1s",
+      "text": "With tooth eruption in adulthood, the mandibular angle becomes?",
+      "options": [
+        "More obtuse",
+        "More acute",
+        "Unchanged",
+        "Fused"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1571glv26",
+      "text": "In old age, the mandibular canal comes to lie closer to which border due to alveolar resorption?",
+      "options": [
+        "Lower border",
+        "Upper border",
+        "Posterior border",
+        "Anterior border"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1571zzb3j",
+      "text": "Compared to the female skull, the male skull generally has a cranial capacity of approximately?",
+      "options": [
+        "1000–1100 cc",
+        "1300–1400 cc",
+        "1450–1500 cc",
+        "1600–1700 cc"
+      ],
+      "correct": [
+        2
+      ]
+    },
+    {
+      "id": "mrji15716jr56",
+      "text": "The female palate is generally described as?",
+      "options": [
+        "U-shaped and larger",
+        "Parabolic and smaller",
+        "Square and larger",
+        "Triangular and larger"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1571wnbk0",
+      "text": "Which feature is typically more prominent in the male skull?",
+      "options": [
+        "Chin (pointed)",
+        "Muscle markings",
+        "Forehead verticality",
+        "Palate size (smaller)"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1571sn0ds",
+      "text": "The PA (Caldwell) view of the skull is particularly useful for visualizing?",
+      "options": [
+        "Maxillary sinuses",
+        "Frontal and ethmoidal sinuses",
+        "Mandibular canal",
+        "Foramen ovale"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1571vgem7",
+      "text": "Which radiographic view shows the sella turcica well, useful in assessing pituitary pathology?",
+      "options": [
+        "Waters view",
+        "Lateral view",
+        "SMV view",
+        "Occlusal view"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji15717c8nk",
+      "text": "The orthopantomogram (OPG) is especially valuable in dental practice for evaluating?",
+      "options": [
+        "Cranial fossae",
+        "Impacted teeth, fractures, cysts",
+        "Cavernous sinus",
+        "Frontal lobe pathology"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji157138ko8",
+      "text": "Before extraction of upper premolars/molars, radiographic evaluation should focus on the relationship with the?",
+      "options": [
+        "Mandibular canal",
+        "Maxillary sinus floor",
+        "Mental foramen",
+        "Foramen ovale"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1571ggbre",
+      "text": "Cephalometric landmarks such as Nasion, Sella, and Pogonion are primarily used in which dental specialty?",
+      "options": [
+        "Endodontics",
+        "Orthodontics",
+        "Periodontics",
+        "Prosthodontics"
+      ],
+      "correct": [
+        1
+      ]
+    },
+    {
+      "id": "mrji1571m1yjz",
+      "text": "Which radiographic view is best for demonstrating the zygomatic arches and skull base foramina like foramen ovale and spinosum?",
+      "options": [
+        "PA view",
+        "Lateral view",
+        "Submentovertical (SMV) view",
+        "Waters view"
+      ],
+      "correct": [
+        2
+      ]
+    }
+  ]
 }
